@@ -1,0 +1,12 @@
+build/
+build-*/
+.vs/
+out/
+xdata/
+
+*.swp
+*.*~
+~*.*
+
+.vimproject
+.tempdirs
