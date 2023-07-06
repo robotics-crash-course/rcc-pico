@@ -9,8 +9,8 @@ int main()
     rcc_init_i2c();
 
     VL53L0X lidar;
-    rcc_init_lidar();
-    
+    rcc_init_lidar(&lidar);
+
     while(true)
     {
         uint16_t dist = getFastReading(&lidar);
