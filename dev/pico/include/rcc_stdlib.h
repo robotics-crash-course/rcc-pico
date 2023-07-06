@@ -28,3 +28,28 @@
 
 
 #define ARRAYSIZE(X) (sizeof(X) / sizeof((X)[0]))
+
+// Potentiometer Init
+void rcc_init_potentiometer(void)
+{
+
+    adc_init();
+    adc_gpio_init(RCC_POTENTIOMETER);
+    adc_select_input(2);
+}
+//Push button init
+void rcc_init_pushbutton(void)
+{
+    gpio_init(RCC_PUSHBUTTON);
+    gpio_pull_up(RCC_PUSHBUTTON);
+    gpio_set_dir(RCC_PUSHBUTTON, false);
+}
+//I2C init
+void rcc_init_i2c(void)
+{
+    i2c_init(i2c1, 100 * 1000);
+    gpio_set_function(RCC_I2C_SCL, GPIO_FUNC_I2C);
+    gpio_set_function(RCC_I2C_SDA, GPIO_FUNC_I2C);
+    gpio_pull_up(RCC_I2C_SCL);
+    gpio_pull_up(RCC_I2C_SDA);
+}
