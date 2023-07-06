@@ -18,6 +18,7 @@ int main()
 
     adc_init();
     adc_gpio_init(28);
+
     //Init servo
     Servo s1;
     Servo s2;
@@ -51,6 +52,17 @@ int main()
     Right_Odom right;
     printf("AFTER ODOM");
 
+    // Lidar
+    VL53L0X lidar;
+    lidar.setBus(i2c1);
+    lidar.setTimeout(200);
+    if (!lidar.init())
+    {
+        printf("Failed to detect and initialize sensor!");
+        while (1) {}
+    }
+    lidar.startContinuous(0);
+
     adc_select_input(2);
     while(true)
     {   
@@ -70,7 +82,7 @@ int main()
         cyw43_arch_gpio_put(0, !(cyw43_arch_gpio_get(0)));
         gpio_put(21, !(gpio_get(21)));
         //Print everything
-        cout << "mpu: " << accelx << " " << accely << " " << angvelz << 
+        cout << "lidar: " << getFastReading(&lidar) << " mpu: " << accelx << " " << accely << " " << angvelz << 
         "Odom: " << left.getCount() << " " << right.getCount() << '\n';
     }
 
