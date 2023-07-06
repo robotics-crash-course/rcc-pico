@@ -32,12 +32,24 @@
 // PLL_period_ps = 1655; macro_period_vclks = 2304
 #define calcMacroPeriod(vcsel_period_pclks) ((((uint32_t)2304 * (vcsel_period_pclks) * 1655) + 500) / 1000)
 
-// Helper func for RCC students
+// Helper funcs for RCC students
 uint16_t getFastReading(VL53L0X* l)
 {
 
   uint16_t range = l->readReg16Bit(l->RESULT_RANGE_STATUS + 10);
   return range;
+}
+
+bool rcc_init_lidar(VL53L0X* l)
+{
+    l->setBus(i2c1);
+    l->setTimeout(200);
+    if(!l->init())
+    {
+        return false;
+    }
+    l->startContinuous(0);
+    return true;
 }
 
 // Constructors ////////////////////////////////////////////////////////////////
