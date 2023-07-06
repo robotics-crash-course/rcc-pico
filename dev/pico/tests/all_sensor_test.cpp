@@ -54,14 +54,7 @@ int main()
 
     // Lidar
     VL53L0X lidar;
-    lidar.setBus(i2c1);
-    lidar.setTimeout(200);
-    if (!lidar.init())
-    {
-        printf("Failed to detect and initialize sensor!");
-        while (1) {}
-    }
-    lidar.startContinuous(0);
+    rcc_init_lidar(&lidar);
 
     adc_select_input(2);
     while(true)

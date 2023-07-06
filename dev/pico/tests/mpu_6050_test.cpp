@@ -4,14 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include <stdio.h>
-#include <iostream>
-#include <string.h>
-#include "pico/stdlib.h"
-#include "pico/binary_info.h"
-#include "hardware/i2c.h"
-#include "pico/cyw43_arch.h"
-#include "sensors/mpu6050.h"
+#include "rcc_stdlib.h"
 using namespace std;
 /* Example code to talk to a MPU6050 MEMS accelerometer and gyroscope
 

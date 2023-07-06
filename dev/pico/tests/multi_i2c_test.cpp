@@ -10,30 +10,6 @@ void rcc_init_i2c_bus(void)
     gpio_pull_up(15);
 }
 
-void rcc_init_lidar(VL53L0X* l)
-{
-    l->setBus(i2c1);
-    l->setTimeout(200);
-    if(!l->init())
-    {
-        printf("Failed to detect and initalize VL53L0X, infinite loop");
-        while(1){}
-    //IDEA: extend pololu class to allow robot to run with uninitialized lidar 
-    //Remove above while loop if implemented
-    //return;
-    }
-    l->startContinuous(0);
-    return;
-}
-
-uint16_t getFastReading(VL53L0X* l)
-{
-
-  uint16_t range = l->readReg16Bit(l->RESULT_RANGE_STATUS + 10);
-  //  sensor.writeReg(sensor.SYSTEM_INTERRUPT_CLEAR, 0x01);
-  return range;
-}
-
 int main() {
     stdio_init_all();
 
