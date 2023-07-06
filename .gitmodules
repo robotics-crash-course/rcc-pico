@@ -15,4 +15,4 @@
 	url = https://github.com/mmahnic/argumentum.git
 [submodule "dev/pico/python/input/Gamepad"]
 	path = dev/pico/python/input/Gamepad
-	url = https://github.com/piborg/Gamepad
+	url = https://github.com/piborg/Gamepad.git
