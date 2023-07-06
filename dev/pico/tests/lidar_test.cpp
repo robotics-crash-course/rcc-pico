@@ -1,16 +1,5 @@
-#include "sensors/VL53L0X.h"
-#include <stdio.h>
-#include <iostream>
-#include "pico/stdlib.h"
+#include "rcc_stdlib.h"
 using namespace std;
-
-uint16_t getFastReading(VL53L0X* l)
-{
-
-  uint16_t range = l->readReg16Bit(l->RESULT_RANGE_STATUS + 10);
-  //  sensor.writeReg(sensor.SYSTEM_INTERRUPT_CLEAR, 0x01);
-  return range;
-}
 
 int main()
 {   
