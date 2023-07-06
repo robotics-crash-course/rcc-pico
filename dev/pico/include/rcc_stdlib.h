@@ -25,3 +25,6 @@
 #include "sensors/odom.h"
 #include "util/pid-control.h"
 #include "util/differentiator.h"
+
+
+#define ARRAYSIZE(X) (sizeof(X) / sizeof((X)[0]))
