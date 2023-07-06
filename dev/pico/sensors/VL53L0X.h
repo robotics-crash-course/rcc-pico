@@ -174,6 +174,8 @@ class VL53L0X
     static uint32_t timeoutMicrosecondsToMclks(uint32_t timeout_period_us, uint8_t vcsel_period_pclks);
 };
 
+uint16_t getFastReading(VL53L0X*);
+
 #endif
 
 
