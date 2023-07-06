@@ -110,6 +110,7 @@ void ServoPosition(Servo *s, uint p)
     pwm_set_dutyH(s->slice, s->chan, p*10 + 250);
 }
 
+//Turn all motors on
 void MotorsOn(Motor *m)
 {
     pwm_set_enabled(m->left.slice, true);
@@ -118,6 +119,7 @@ void MotorsOn(Motor *m)
     m->right.on = true;
 }
 
+//Shut all motors off
 void MotorsOff(Motor *m)
 {
 
@@ -132,16 +134,18 @@ void MotorsOff(Motor *m)
     gpio_put(m->in4, false);
 }
 
+//Initialize the input gpio for the motor
 void MotorInitGPIO(uint gpio)
 {
     gpio_init(gpio);
     gpio_set_dir(gpio, true);
 }
 
+/*  Initialize BOTH motors!
+    freq: The pwm frequency. You can hear the frequency if you make it low enough!
+*/
 void MotorInit(Motor *m, uint gpio_l, uint gpio_r, uint freq)
 {
-    // ServoInit(&s->left, RCC_ENA, false, freq);
-    // ServoInit(&s->right, RCC_ENB, false, freq);
     MotorInitGPIO(gpio_l);
     MotorInitGPIO(gpio_r);
     gpio_set_function(gpio_l, GPIO_FUNC_PWM);
