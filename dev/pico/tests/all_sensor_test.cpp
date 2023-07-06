@@ -13,11 +13,9 @@ int main()
 
     cyw43_arch_gpio_put(0,1);
 
-    gpio_init(21);
-    gpio_set_dir(21, true);
-
-    adc_init();
-    adc_gpio_init(28);
+    //Init potentiometer and pushbutton
+    rcc_init_potentiometer();
+    rcc_init_pushbutton();
 
     //Init servo
     Servo s1;
@@ -36,11 +34,7 @@ int main()
     printf("AFTER MOTORS");
 
     //INit i2c and mpu6050    
-    i2c_init(i2c1, 100 * 1000);
-    gpio_set_function(14, GPIO_FUNC_I2C);
-    gpio_set_function(15, GPIO_FUNC_I2C);
-    gpio_pull_up(14);
-    gpio_pull_up(15);
+    rcc_init_i2c();
     MPU6050 imu;
     imu.begin(i2c1);
     imu.calibrate();
@@ -56,11 +50,15 @@ int main()
     VL53L0X lidar;
     rcc_init_lidar(&lidar);
 
-    adc_select_input(2);
     while(true)
-    {   
+    {   //Potentiometer
         uint16_t pot_val = adc_read();
         sleep_ms(100);
+        //Pushbutton
+        if(!gpio_get(RCC_PUSHBUTTON))
+        {
+            cout << "PUSHBUTTON PRESSED!\n";
+        }
 
         //Servo Pos
         ServoPosition(&s1, 100*pot_val/4097);

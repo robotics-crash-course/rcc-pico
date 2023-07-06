@@ -4,19 +4,14 @@ using namespace std;
 int main(void)
 {
     stdio_init_all();
-    adc_init();
-    adc_gpio_init(28);
+    rcc_init_potentiometer();
     sleep_ms(1000);
 
     if(cyw43_arch_init())
     {
         cout << "CYW43 init failed!" << "\n";
-    }  
+    }
     
-    // cyw43_arch_enable_sta_mode();
-    
-    cout << "It inialized?" << "\n";
-
     cyw43_arch_gpio_put(0, true);
 
     Servo s1;
@@ -26,7 +21,6 @@ int main(void)
     ServoOn(&s1);
     ServoOn(&s2);
     
-    adc_select_input(2);
     while(true)
     {   
         uint16_t pot_val = adc_read();

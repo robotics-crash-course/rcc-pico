@@ -4,8 +4,7 @@ using namespace std;
 int main(void)
 {
     stdio_init_all();
-    adc_init();
-    adc_gpio_init(28);
+    rcc_init_potentiometer();
     sleep_ms(1000);
 
     Motor motors;
@@ -18,8 +17,7 @@ int main(void)
     }
 
     cyw43_arch_gpio_put(0, true);
-
-    adc_select_input(2);
+    
     while(true)
     {   
         int32_t pot_val = (adc_read()*2) - 4097;

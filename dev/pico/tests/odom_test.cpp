@@ -6,8 +6,8 @@ int main()
     stdio_init_all();
     sleep_ms(1000);
     cout << "Starting odom test!" << "\n";
-    Odom<12> left;
-    Odom<13> right;
+    Left_Odom left;
+    Right_Odom right;
     
     while(true)
     {

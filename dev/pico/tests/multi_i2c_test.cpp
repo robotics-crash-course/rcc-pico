@@ -1,20 +1,11 @@
 #include "rcc_stdlib.h"
 using namespace std;
 
-void rcc_init_i2c_bus(void)
-{
-    i2c_init(i2c1, 100 * 1000);
-    gpio_set_function(14, GPIO_FUNC_I2C);
-    gpio_set_function(15, GPIO_FUNC_I2C);
-    gpio_pull_up(14);
-    gpio_pull_up(15);
-}
-
 int main() {
     stdio_init_all();
 
     sleep_ms(1000);
-    rcc_init_i2c_bus();
+    rcc_init_i2c();
     
     //Instantiate IMU and Lidar classes
     MPU6050 imu;

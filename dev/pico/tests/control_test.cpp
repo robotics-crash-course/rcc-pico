@@ -30,27 +30,11 @@ void init_button_isr(void)
     gpio_add_raw_irq_handler(RCC_PUSHBUTTON, &button_isr);
 }
 
-
-void initialize_potentiometer()
-{
-
-    adc_init();
-    adc_gpio_init(RCC_POTENTIOMETER);
-    adc_select_input(2); //TODO: Macro for gpio -> adc chan 
-}
-
-void initialize_pushbutton()
-{
-    gpio_init(RCC_PUSHBUTTON);
-    gpio_set_dir(RCC_PUSHBUTTON, false); //Make push button gpio an input
-}
-
-
 int main(void)
 {
     stdio_init_all();
-    initialize_potentiometer();
-    initialize_pushbutton();
+    rcc_init_potentiometer();
+    rcc_init_pushbutton();
     // init_button_isr();
     sleep_ms(1000);
 
