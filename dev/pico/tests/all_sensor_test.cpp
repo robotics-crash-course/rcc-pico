@@ -47,8 +47,8 @@ int main()
     printf("AFTER IMU");
 
     // //Odom
-    Odom<12> left;
-    Odom<13> right;
+    Left_Odom left;
+    Right_Odom right;
     printf("AFTER ODOM");
 
     adc_select_input(2);
