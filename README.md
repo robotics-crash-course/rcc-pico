@@ -19,7 +19,7 @@ Distributed under the [GPLv3] or later.
 
 
 [`<michael.a.giglia@gmail.com>`]: mailto:michael.a.giglia@gmail.com
-['<jett@circe.com>']: mailto:jett@circe.com
+[`<jett@circe.com>`]: mailto:jett@circe.com
 [`<andrewlorber@aol.com>`]: mailto:andrewlorber@aol.com
 [`<jacobkoziej@gmail.com>`]: mailto:jacobkoziej@gmail.com
 [GPLv3]: LICENSE.md
