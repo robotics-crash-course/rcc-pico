@@ -2,8 +2,9 @@
     "configurations": [
         {
             "includePath": [
-                "${PICO_SDK_PATH}",
-                "${PICO_SDK_PATH}/**",
+                "${env:PICO_SDK_PATH}",
+                "${env:PICO_SDK_PATH}/**",
+                "${workspaceFolder}/**",
                 "${workspaceFolder}/dev/pico/include",
                 "${workspaceFolder}/dev/pico",
                 "${PICO_SDK_PATH}/pico"
