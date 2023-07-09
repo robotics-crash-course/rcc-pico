@@ -12,13 +12,13 @@ static const char start_data = '\x02'; // STX (start of text)
 static const char end_data   = '\x03'; // ETX (end of text)
 static const char end_tx     = '\x04'; // EOT (end of transmission)
 
-static SHA1 hash; // XXX: likely not thread-safe, but whatever...
+static SHA1 hasher; // XXX: likely not thread-safe, but whatever...
 
 Packet::Packet(int32_t id, const std::string& data)
 : id_(id), data_(data) {}
 
 std::string Packet::checksum() const {
-	return hash(serialize<int32_t>(std::make_tuple(id_)) + data_);
+	return hasher(serialize<int32_t>(std::make_tuple(id_)) + data_);
 }
 
 bool Packet::checksum(const std::string& sum) const {

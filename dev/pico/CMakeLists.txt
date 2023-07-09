@@ -26,6 +26,7 @@ macro(make_exec exec_name exec_dir)
     # pico_enable_stdio_uart(${exec_name} 1)
 
 # Allow hash-library-sha1 to find endian.h which is in include directory
+    target_include_directories(serial-packets PUBLIC hash-library-sha1)
     target_include_directories(hash-library-sha1 PUBLIC include)
 
     target_compile_definitions(${exec_name} PUBLIC
@@ -40,7 +41,7 @@ macro(make_exec exec_name exec_dir)
                             # CYW43_HOST_NAME="NAME_I_WANT MY PICO TO HAVE ON NETWORK"
 
                         # Pico Sdk
-                            PICO_MAX_SHARED_IRQ_HANDLERS=6 #IMPORTANT!! It seems default shared irq is 2, we need more.
+                            PICO_MAX_SHARED_IRQ_HANDLERS=8 #IMPORTANT!! It seems default shared irq is 2, we need more.
                             
                         # Related to wireless capabilities
                             # PICO_CYW43_ARCH_BACKGROUND
@@ -49,7 +50,7 @@ macro(make_exec exec_name exec_dir)
     target_include_directories(${exec_name} PUBLIC
                             ${CMAKE_CURRENT_LIST_DIR}
                             ${PICO_SDK_PATH}
-                            wireless/include #TODO: Turn into CMake compatible directory (lib)
+                            # wireless/include #TODO: Turn into CMake compatible directory (lib)
                             include
                             
     )
@@ -60,7 +61,7 @@ macro(make_exec exec_name exec_dir)
                             pico_stdlib
                             hardware_adc
                             hardware_pwm
-                            # pico_multicore
+                            pico_multicore
                             serial-packets
                             hardware_i2c
                             sensors
@@ -72,14 +73,17 @@ macro(make_exec exec_name exec_dir)
 endmacro()
 
 make_exec(wireless tests/wireless_interface_test.cpp)
-make_exec(mpu6050_test tests/mpu_6050_test.cpp)
-make_exec(lidar_test tests/lidar_test.cpp)
-make_exec(multi_i2c_test tests/multi_i2c_test.cpp)
-make_exec(hcsr04_test tests/hcsr04_test.cpp)
-make_exec(odom_test tests/odom_test.cpp)
-make_exec(servo_pot_test tests/servo_pot_test.cpp)
-make_exec(motor_test tests/motor_test.cpp)
-make_exec(frequency_test tests/frequency_test.cpp)
-make_exec(control_test tests/control_test.cpp)
-make_exec(all_sensor_test tests/all_sensor_test.cpp)
-make_exec(vel_control_test tests/vel_control_test.cpp)
+make_exec(wireless_background tests/wireless_background_test.cpp)
+# make_exec(mpu6050_test tests/mpu_6050_test.cpp)
+# make_exec(lidar_test tests/lidar_test.cpp)
+# make_exec(multi_i2c_test tests/multi_i2c_test.cpp)
+# make_exec(hcsr04_test tests/hcsr04_test.cpp)
+# make_exec(odom_test tests/odom_test.cpp)
+# make_exec(servo_pot_test tests/servo_pot_test.cpp)
+# make_exec(motor_test tests/motor_test.cpp)
+# make_exec(frequency_test tests/frequency_test.cpp)
+# make_exec(control_test tests/control_test.cpp)
+# make_exec(all_sensor_test tests/all_sensor_test.cpp)
+# make_exec(vel_control_test tests/vel_control_test.cpp)
+# make_exec(conversions challenges/02-functions/1-conversions-sol/1-conversions-sol.cpp)
+# make_exec(blink_test tests/blink_test.cpp)

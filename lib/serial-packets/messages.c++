@@ -79,3 +79,30 @@ std::string Twist::repr()
 	ss << "Twist<linear: " << linear << " angular: " << angular << ">\n";
 	return ss.str();
 }
+
+Sensor_Data::Sensor_Data() {
+
+}
+
+Sensor_Data::Sensor_Data(const Packet& p) {
+	std::tie(potval, dist, wz, left, right) = 
+	deserialize<int32_t, int32_t, float, int32_t, int32_t>(p.data());
+}
+
+Packet Sensor_Data::pack() {
+	return Packet(
+		Sensor_Data::id,
+		serialize<
+		int32_t, int32_t, float, int32_t, int32_t
+		>(std::make_tuple(
+			potval, dist, wz, left, right
+		))
+	);
+}
+
+std::string Sensor_Data::repr() {
+	std::stringstream ss;
+	ss << "Sensor_Data<potval: " << potval << " dist: " << dist <<
+	" wz: " << wz << " left: " << left << " right: " << right << '\n';
+	return ss.str();
+}

@@ -2,16 +2,31 @@
     "configurations": [
         {
             "includePath": [
-                "${PICO_SDK_PATH}",
-                "${PICO_SDK_PATH}/**",
-                "${workspaceFolder}/dev/pico/include",
-                "${workspaceFolder}/dev/pico",
-                "${PICO_SDK_PATH}/pico"
+                "/home/mgiglia/repos/pico-sdk",
+                "/home/mgiglia/repos/pico-sdk/**",
+                "/home/mgiglia/repos/rcc-pico/dev/pico/include",
+                "/home/mgiglia/repos/rcc-pico/dev/pico",
+                "/home/mgiglia/repos/pico-sdk/pico",
+                "${workspaceFolder}/lib",
+                "${workspaceFolder}/lib/external"
             ],
             "intelliSenseMode": "linux-gcc-x64",
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c17",
-            "cppStandard": "gnu++17"
+            "cppStandard": "gnu++17",
+            "compilerPathInCppPropertiesJson": "/usr/bin/gcc",
+            "mergeConfigurations": false,
+            "browse": {
+                "path": [
+                    "/home/mgiglia/repos/pico-sdk",
+                    "/home/mgiglia/repos/pico-sdk/**",
+                    "${workspaceFolder}/dev/pico/include",
+                    "${workspaceFolder}/dev/pico",
+                    "/home/mgiglia/repos/pico-sdk/pico",
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
         }
     ],
     "version": 4
