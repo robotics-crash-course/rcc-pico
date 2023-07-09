@@ -13,19 +13,8 @@ int main()
 
     cyw43_arch_gpio_put(0,1);
 
-    //Init potentiometer and pushbutton
-    rcc_init_potentiometer();
+    //Init pushbutton
     rcc_init_pushbutton();
-
-    //Init servo
-    Servo s1;
-    Servo s2;
-    ServoInit(&s1, 16, false, 50);
-    ServoInit(&s2, 17, false, 50);
-    ServoOn(&s1);
-    ServoOn(&s2);
-    printf("AFTER SERVO");
-
 
     //Init motors
     Motor motors;
@@ -33,22 +22,10 @@ int main()
     MotorsOn(&motors);
     printf("AFTER MOTORS");
 
-    //INit i2c and mpu6050    
-    rcc_init_i2c();
-    MPU6050 imu;
-    imu.begin(i2c1);
-    imu.calibrate();
-    float accelx, accely, angvelz;
-    printf("AFTER IMU");
-
     // //Odom
     Left_Odom left;
     Right_Odom right;
     printf("AFTER ODOM");
-
-    // Lidar
-    VL53L0X lidar;
-    rcc_init_lidar(&lidar);
 
     int left_count = 0;
     int right_count = 0;

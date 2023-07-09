@@ -11,21 +11,10 @@ int main()
     }
     cout << "init worked!" << '\n';
 
-    cyw43_arch_gpio_put(0,1);
+    cyw43_arch_gpio_put(0,1); //turn led on
 
-    //Init potentiometer and pushbutton
-    rcc_init_potentiometer();
+    //Init pushbutton
     rcc_init_pushbutton();
-
-    // //Init servo
-    // Servo s1;
-    // Servo s2;
-    // ServoInit(&s1, 16, false, 50);
-    // ServoInit(&s2, 17, false, 50);
-    // ServoOn(&s1);
-    // ServoOn(&s2);
-    // printf("AFTER SERVO");
-
 
     //Init motors
     Motor motors;
@@ -41,15 +30,6 @@ int main()
     float accelx, accely, angvelz;
     printf("AFTER IMU");
 
-    // //Odom
-    Left_Odom left;
-    Right_Odom right;
-    printf("AFTER ODOM");
-
-    // // Lidar
-    // VL53L0X lidar;
-    // rcc_init_lidar(&lidar);
-
     float desired_angvelZ = 90.0;
     float power_boost = 0.0;
     float error = 0.0;
@@ -59,7 +39,6 @@ int main()
 
     while(true)
     {   
-        
         //Pushbutton
         if(!gpio_get(RCC_PUSHBUTTON))
         {
@@ -82,9 +61,6 @@ int main()
                     cyw43_arch_gpio_put(0, 1);
                 }
             }
-
         }
-
     }
-
 }

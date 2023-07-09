@@ -13,19 +13,12 @@ int main()
 
     cyw43_arch_gpio_put(0,1);
 
-    //Init potentiometer and pushbutton
-    rcc_init_potentiometer();
+    //Init pushbutton
     rcc_init_pushbutton();
 
     //Init servo
-    Servo s1;
-    Servo s2;
     Servo s3;
-    ServoInit(&s1, 16, false, 50);
-    ServoInit(&s2, 17, false, 50);
     ServoInit(&s3, 18, false, 50);
-    ServoOn(&s1);
-    ServoOn(&s2);
     ServoOn(&s3);
     printf("AFTER SERVO");
 
@@ -36,13 +29,8 @@ int main()
     MotorsOn(&motors);
     printf("AFTER MOTORS");
 
-    //INit i2c and mpu6050    
+    //Init i2c 
     rcc_init_i2c();
-    MPU6050 imu;
-    imu.begin(i2c1);
-    imu.calibrate();
-    float accelx, accely, angvelz;
-    printf("AFTER IMU");
 
     // //Odom
     Left_Odom left;
