@@ -59,8 +59,9 @@ int main()
     }
     int i = 0;
 
-    while(true)
-        sleep_ms(100);
+    while(true){
+        sleep_ms(10);
+        // cyw43_arch_gpio_put(0, !(cyw43_arch_gpio_get(0)));
 
         if(!gpio_get(RCC_PUSHBUTTON))
         {
@@ -68,5 +69,6 @@ int main()
             ServoPosition(&s3, positions[i]);
             i++;
         }
+    }
 }
 
