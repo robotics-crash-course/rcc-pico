@@ -181,7 +181,9 @@ bool WirelessMsgInterface::send_msg(Packet pack)
         printf("Failed to send UDP packet! error=%d", er);
     } else {
         // printf("Sent packet %s\n", packet.data().c_str()); 
-        cout << "Sent packet: " << packet << '\n';
+        #ifdef RECV_DEBUG
+            cout << "Sent packet: " << packet << '\n';
+        #endif
     }
     return true;
 }

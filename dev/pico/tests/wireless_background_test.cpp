@@ -1,6 +1,8 @@
 #define DEBUG
+#define SEND_DEBUG
+#define RECV_DEBUG
 
-// #include "rcc_stdlib.h"
+#include "rcc_stdlib.h"
 #include <rcc_wireless_msg_interface.h>
 
 // using namespace std;
@@ -89,49 +91,65 @@ bool timer_callback(struct repeating_timer *t)
     return true;
 }
 
-// typedef struct robot_conglomerate_s{
-//     WirelessMsgInterface interface;
-//     MPU6050 imu;
+typedef struct robot_conglomerate_s{
+    WirelessMsgInterface* interface;
+    MPU6050* imu;
+    VL53L0X* lidar;
+    Left_Odom* left;
+    Right_Odom* right;
 
-// }robot_conglomerate_t;
+}robot_conglomerate_t;
 
-// robot_conglomerate_t* default_robot_conglomerate() { 
-// //   robot_conglomerate_t* robot = malloc(sizeof(robot_conglomerate_t));
-//     robot_conglomerate_t robot = new robot_conglomerate_s();
+robot_conglomerate_t* default_robot_conglomerate() { 
+  robot_conglomerate_t* robot = (robot_conglomerate_t*)malloc(sizeof(robot_conglomerate_t));
 
-//   WirelessMsgInterface interface = new WirelessMsgInterface(IP_SEND, IP_RECV, PORT_SEND, PORT_RECV);
-//   interface.setup_wireless_interface();
-//   MPU6050 imu = new MPU6050();
-//   imu.begin_pico();
+  WirelessMsgInterface* interface = new WirelessMsgInterface(IP_SEND, IP_RECV, PORT_SEND, PORT_RECV);
+  interface->setup_wireless_interface();
+  MPU6050* imu = new MPU6050();
+  imu->begin(i2c1);
 
-//   robot->interface = interface;
-//   robot->imu = imu;
-//   return robot;
-// }
+  robot->interface = interface;
+  robot->imu = imu;
+  return robot;
+}
 
-// typedef struct robot_sensor_data_s{
-//     uint16_t pot;
-//     float wz;
-// }robot_sensor_data_t;
+typedef struct robot_sensor_data_s{
+    uint16_t pot;
+    float wz;
+}robot_sensor_data_t;
 
-// bool send_robot_state(repeating_timer_t* t)
-// {
-//     //Get all sensor data
-//     robot_conglomerate_t* robot = (robot_conglomerate_t*)t->user_data;
-//     float wz = robot->imu.getAngVelZ();
+bool send_robot_state(repeating_timer_t* t)
+{
+    //Get all sensor data
+    robot_conglomerate_t* robot = (robot_conglomerate_t*)t->user_data;
+    robot->imu->update_pico();
+    float wz = robot->imu->getAngVelZ();
+    uint16_t dist = getFastReading(robot->lidar);
+    uint16_t potval = adc_read();
 
-//     cout << "wz: " << wz << '\n';
-//     return true;
-// }
+    Sensor_Data data;
+    data.wz = wz;
+    data.potval = potval;
+    data.left = robot->left->getCount();
+    data.right = robot->right->getCount();
+    robot->interface->send_msg(data.pack());
+    std::cout << "pot val: " << potval << " wz: " << wz << " dist: " << dist << " lcount: " << robot->left->getCount() << 
+                " rcount: " << robot->right->getCount() << '\n';
+    return true;
+}
+
+bool print_things(repeating_timer_t* t)
+{
+    std::cout << "Is this printing?\n";
+    return true;
+}
 
 int main()
 {
     uint delay_length;
-    struct repeating_timer send_timer;
-    adc_init();
-    adc_gpio_init(28);
-    adc_gpio_init(29);
-    adc_set_temp_sensor_enabled(true);
+    repeating_timer_t send_timer;
+    rcc_init_i2c();
+    rcc_init_potentiometer();
     
     stdio_init_all();    
     sleep_ms(1000);
@@ -139,13 +157,27 @@ int main()
         printf("failed to initialise\n");
         return 1;
     }
+    std::cout << "Initialized cyw43 arch\n";
 
     cyw43_arch_gpio_put(0,1);
     cyw43_arch_enable_sta_mode();
-    WirelessMsgInterface interface(IP_SEND, IP_RECV, PORT_SEND, PORT_RECV);
-    interface.setup_wireless_interface();
     init_cyw43();
-    // add_repeating_timer_ms(500, timer_callback, &interface, &send_timer);
+    WirelessMsgInterface interface(IP_SEND, IP_RECV, PORT_SEND, PORT_RECV);
+    interface.setup_wireless_interface();    
+    MPU6050 imu;
+    imu.begin(i2c1);
+    VL53L0X lidar;
+    rcc_init_lidar(&lidar);
+    Left_Odom left;
+    Right_Odom right;
+
+    robot_conglomerate_t robot;
+    robot.imu = &imu;
+    robot.interface = &interface;
+    robot.lidar = &lidar;
+    robot.left = &left;
+    robot.right = &right;
+    add_repeating_timer_ms(100, send_robot_state, &robot, &send_timer);
 
 
     char * address;

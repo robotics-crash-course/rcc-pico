@@ -76,4 +76,18 @@ struct Move_Feedback {
 	int32_t trans_id;
 };
 
+struct Sensor_Data {
+	static constexpr const int32_t id = 501;
+	Packet pack();
+	std::string repr();
+	Sensor_Data();
+	Sensor_Data(const Packet&);
+
+	int32_t potval;
+	int32_t dist;
+	float wz;
+	int32_t left;
+	int32_t right;
+};
+
 #endif

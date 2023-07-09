@@ -5,14 +5,13 @@
 #define ENB 5
 #define IN3 6
 #define IN4 7
+#include "rcc_stdlib.h"
 #include <rcc_wireless_msg_interface.h>
-#include <stdlib.h>
-#include "pico/stdlib.h"
-#include "pico/cyw43_arch.h"
-#include "hardware/adc.h"
-#include "pwm_helper.h"
-
-using namespace std;
+// #include <stdlib.h>
+// #include "pico/stdlib.h"
+// #include "pico/cyw43_arch.h"
+// #include "hardware/adc.h"
+// using namespace std;
 
 void WirelessMsgInterface::packet_receiver(Packet p) {
     this->send_msg(p);
