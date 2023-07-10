@@ -120,7 +120,9 @@ void WirelessMsgInterface::recv_msg( void* arg,              // User argument - 
             // inter_thread_message m(out.pack());
             // inter_thread_message m(tmp.str());
             // interface->msg_stream << m.s;
-            printf("Received msg!\n");
+            #ifdef UDP_RECV_DEBUG
+                printf("[UDP_RECV_DEBUG]: Received msg!\n");
+            #endif 
             mutex_exit(&interface->mtx);
     }
 
@@ -181,8 +183,8 @@ bool WirelessMsgInterface::send_msg(Packet pack)
         printf("Failed to send UDP packet! error=%d", er);
     } else {
         // printf("Sent packet %s\n", packet.data().c_str()); 
-        #ifdef RECV_DEBUG
-            cout << "Sent packet: " << packet << '\n';
+        #ifdef SEND_DEBUG
+            cout << "[SEND_DEBUG]: Sent: " << packet << '\n';
         #endif
     }
     return true;

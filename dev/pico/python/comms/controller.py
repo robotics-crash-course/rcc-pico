@@ -103,6 +103,8 @@ class WirelessController(CommsController):
 			# assert picoip  		== interface.picoip, 'Pico ip is different'
 			self.sockin.bind((self.interface.computerip, self.interface.porttocomputer))
 			self.connected = True
+		except AssertionError as e:
+			print("Assertion Error")
 		except Exception as e:
 			print('exception in setup:')
 			print(traceback.format_exc())
@@ -128,16 +130,32 @@ class WirelessController(CommsController):
 				assert addr[0] == self.interface.picoip, 'Incoming data not from pico'
 				p = Packet.read_from_raw(data)
 				self.inbound.put(p)
+			except AssertionError as e:
+				print("Assertion Error")
 			except:
 				print('exception in inbound loop:')
 				print(traceback.format_exc())
 
+# TODO: Setup way to pass in a function tree for each packet received definition
+# This way we can effect values(systems) external to the wireless interface class
+	def packet_receive_process(self, Ts=0.1):
+		try:
+			while True:
+				time.sleep(Ts)
+				while self.has_packet():
+					pin = self.get_packet()
+					packet_receive_demux(pin)
+		except Exception as e:
+			print("Exception in packet_receive_process: ")
+			print(traceback.format_exc())
 
-def packet_receive(p):
+def packet_receive_demux(p):
 	if p.id_ == Twist.id():
 		print(f"Received: {Twist(p)}")
 	if p.id == Test_Inbound.id():
 		print(f"Received: {Test_Inbound(p)}")
+	if p.id == Sensor_Data.id():
+		print(f"Received: {Sensor_Data(p)}")
 
 if __name__ == "__main__":
 	c = WirelessController(WirelessInterface)

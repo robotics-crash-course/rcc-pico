@@ -1,6 +1,7 @@
 from comms.packet import *
 from comms.serialize import *
 
+
 class Test_Outbound:
 	def __init__(self, field_1, field_2):
 		self.field_1 = field_1
@@ -14,6 +15,7 @@ class Test_Outbound:
 
 	def __repr__(self):
 		return f'Test_Outbound<{self.field_1}, {self.field_2}>'
+
 
 class Test_Inbound:
 	
@@ -30,12 +32,14 @@ class Test_Inbound:
 	def __repr__(self):
 		return f'Test_Inbound<{self.field_1}, {self.field_2}, {self.field_3}>'
 	
+
 class SwitchToConsole:
 	def __init__(self):
 		self.id_ = 0
 
 	def pack(self):
 		return Packet(self.id_, b' ')
+
 
 class SimpleMove:
 	def __init__(self, msg):
@@ -66,6 +70,7 @@ class SimpleMove:
 			self.fields
 		))
 
+
 class MoveFeedback:
 	def __init__(self, p):
 		self.id_ = MoveFeedback.id()
@@ -90,12 +95,14 @@ class MoveFeedback:
 	def __repr__(self):
 		return f'MoveFeedback<{self.distance}, {self.curvature}, {self.velocity}>'
 
+
 class Stop:
 	def __init__(self):
 		self.id_ = 666
 		
 	def pack(self):
 		return Packet(self.id_, b' ')
+
 
 class Twist:
 	def __init__(self, msg):
@@ -129,3 +136,57 @@ class Twist:
 		
 	def __repr__(self):
 		return f'Twist<{self.linear}, {self.angular}>'
+	
+
+class Sensor_Data:
+	def __init__(self, msg):
+		self.id_ = 501
+		self.packet_spec = (Int32, Int32, Float, Int32, Int32)
+
+		if type(msg) is Packet:
+			self.from_pack(msg)
+			return None
+		if type(msg) is tuple:
+			[
+				self.potentiometer, self.dist, self.angVelZ, 
+				self.leftCount, self.rightCount
+			] = [
+				msg[0], msg[1], msg[2], msg[3], msg[4]
+			]
+		else:
+			[
+				self.potentiometer, self.dist, self.angVelZ, 
+				self.leftCount, self.rightCount
+			] = [
+				msg.potentiometer, msg.dist, msg.angVelZ, 
+				msg.leftCount, msg.rightCount
+			]
+		self.fields = [
+				self.potentiometer, self.dist, self.angVelZ, 
+				self.leftCount, self.rightCount
+			]
+
+	def pack(self):
+		return Packet(self.id_,serialize(self.packet_spec, self.fields))
+	
+	@staticmethod
+	def id():
+		return 501
+	
+	def from_pack(self,p):
+		[
+			self.potentiometer, self.dist, self.angVelZ, 
+			self.leftCount, self.rightCount
+		], _ = deserialize(
+			(Int32, Int32, Float, Int32, Int32),
+			p.data()
+		)
+		self.fields = [
+				self.potentiometer, self.dist, self.angVelZ, 
+				self.leftCount, self.rightCount
+			]
+		
+	def __repr__(self):
+		return f'Sensor_Data<{self.potentiometer}, {self.dist}, \
+			{self.angVelZ}, {self.leftCount}, {self.rightCount}>'
+	

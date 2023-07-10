@@ -60,6 +60,6 @@ try:
         time.sleep(0.1)
         while j.w.has_packet():
             pin = j.w.get_packet()
-            packet_receive(pin)
+            packet_receive_demux(pin)
 finally:
     gamepad.disconnect()

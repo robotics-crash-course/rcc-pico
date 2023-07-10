@@ -21,9 +21,8 @@ void WirelessMsgInterface::packet_receiver(Packet p) {
     case Twist::id:
     {
         Twist twist(p);
-        #ifdef DEBUG
-            printf("[DEBUG]: %s", twist.repr().c_str());
-            printf("Twist rep: %f, %f\n", twist.linear, twist.angular);
+        #ifdef RECV_DEBUG
+            printf("[RECV_DEBUG]: %s", twist.repr().c_str());
         #endif
         break;
     }
@@ -48,8 +47,8 @@ void WirelessMsgInterface::packet_receiver(Packet p) {
 
     default:
         // nothing (yet, at least)
-        #ifdef DEBUG
-        printf("[DEBUG]: Invalid Packet | id: %u | data: %s\n", p.id(), p.data().c_str());
+        #ifdef RECV_DEBUG
+        printf("[RECV_DEBUG]: Invalid Packet | id: %u | data: %s\n", p.id(), p.data().c_str());
         #endif
         break;
     }
