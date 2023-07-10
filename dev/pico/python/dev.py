@@ -56,10 +56,11 @@ gamepad.addAxisMovedHandler(linearAxis ,j.linear_handler)
 gamepad.addAxisMovedHandler(angularAxis, j.angular_handler)
 
 try:
-    while True:
-        time.sleep(0.1)
-        while j.w.has_packet():
-            pin = j.w.get_packet()
-            packet_receive_demux(pin)
+    j.w.packet_receive_process()
+    # while True:
+    #     time.sleep(0.1)
+    #     while j.w.has_packet():
+    #         pin = j.w.get_packet()
+    #         packet_receive_demux(pin)
 finally:
     gamepad.disconnect()

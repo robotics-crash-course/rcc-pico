@@ -64,9 +64,9 @@ class CommsController():
 		return self.inbound.get()
 	
 class WirelessInterface:
-	picoip = '192.168.1.37'
+	picoip = '192.168.1.248'
 	porttopico = 9900
-	computerip = '192.168.1.35'
+	computerip = '192.168.1.247'
 	porttocomputer = 9999
 	picohostname = 'PICOHOME'
 	computerhostname = 'localhost'
@@ -131,20 +131,20 @@ class WirelessController(CommsController):
 				p = Packet.read_from_raw(data)
 				self.inbound.put(p)
 			except AssertionError as e:
-				print("Assertion Error")
+				print("Assertion Error in handle_inbound()")
 			except:
 				print('exception in inbound loop:')
 				print(traceback.format_exc())
 
 # TODO: Setup way to pass in a function tree for each packet received definition
 # This way we can effect values(systems) external to the wireless interface class
-	def packet_receive_process(self, Ts=0.1):
+	def packet_receive_process(self, func, Ts=0.1):
 		try:
 			while True:
 				time.sleep(Ts)
 				while self.has_packet():
 					pin = self.get_packet()
-					packet_receive_demux(pin)
+					func(pin)
 		except Exception as e:
 			print("Exception in packet_receive_process: ")
 			print(traceback.format_exc())
@@ -152,9 +152,9 @@ class WirelessController(CommsController):
 def packet_receive_demux(p):
 	if p.id_ == Twist.id():
 		print(f"Received: {Twist(p)}")
-	if p.id == Test_Inbound.id():
+	if p.id_ == Test_Inbound.id():
 		print(f"Received: {Test_Inbound(p)}")
-	if p.id == Sensor_Data.id():
+	if p.id_ == Sensor_Data.id():
 		print(f"Received: {Sensor_Data(p)}")
 
 if __name__ == "__main__":
