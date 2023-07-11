@@ -96,4 +96,4 @@ endmacro()
 
 # Lessons
 make_exec(helloworld lessons/01/helloworld.cpp)
-make_exec(debug lessons/01/debug.cpp)
+# make_exec(debug lessons/01/debug.cpp)
