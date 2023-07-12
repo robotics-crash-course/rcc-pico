@@ -73,8 +73,13 @@ endmacro()
 
 # make_exec(wireless tests/wireless_interface_test.cpp)
 make_exec(mpu6050_test tests/mpu_6050_test.cpp)
+<<<<<<< Updated upstream
 # make_exec(lidar_test tests/lidar_test.cpp)
 # make_exec(multi_i2c_test tests/multi_i2c_test.cpp)
+=======
+>>>>>>> Stashed changes
+make_exec(lidar_test tests/lidar_test.cpp)
+make_exec(multi_i2c_test tests/multi_i2c_test.cpp)
 # make_exec(hcsr04_test tests/hcsr04_test.cpp)
 make_exec(odom_test tests/odom_test.cpp)
 # make_exec(servo_pot_test tests/servo_pot_test.cpp)
