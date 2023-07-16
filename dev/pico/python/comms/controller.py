@@ -31,7 +31,11 @@ class CommsController():
 		self.connected = True # sort of vestigial
 
 		self.ser.write('switch-modes\n'.encode('utf-8'))
+	
+	def start_outbound(self):
 		self.outbound_thread.start()
+	
+	def start_inbound(self):
 		self.inbound_thread.start()
 
 	def handle_outbound(self):
@@ -64,7 +68,7 @@ class CommsController():
 		return self.inbound.get()
 	
 class WirelessInterface:
-	picoip = '192.168.1.248'
+	picoip = '192.168.1.249'
 	porttopico = 9900
 	computerip = '192.168.1.247'
 	porttocomputer = 9999
@@ -110,8 +114,8 @@ class WirelessController(CommsController):
 			print(traceback.format_exc())
 			self.connected = False
 			print("Socket setup failed")
-		self.outbound_thread.start()
-		self.inbound_thread.start()
+		# self.outbound_thread.start()
+		# self.inbound_thread.start()
 
 	def handle_outbound(self):
 		while True:
@@ -127,11 +131,12 @@ class WirelessController(CommsController):
 		while True:
 			try:
 				data, addr = self.sockin.recvfrom(512)
-				assert addr[0] == self.interface.picoip, 'Incoming data not from pico'
+				# assert addr[0] == self.interface.picoip, '[RECV]: unexpected IP address'
 				p = Packet.read_from_raw(data)
 				self.inbound.put(p)
 			except AssertionError as e:
-				print("Assertion Error in handle_inbound()")
+				print(e)
+				# print(traceback.format_exc())
 			except:
 				print('exception in inbound loop:')
 				print(traceback.format_exc())
@@ -141,10 +146,9 @@ class WirelessController(CommsController):
 	def packet_receive_process(self, func, Ts=0.1):
 		try:
 			while True:
-				time.sleep(Ts)
 				while self.has_packet():
 					pin = self.get_packet()
-					func(pin)
+					func(pin) # Pass incoming packet to function passed into this function
 		except Exception as e:
 			print("Exception in packet_receive_process: ")
 			print(traceback.format_exc())
