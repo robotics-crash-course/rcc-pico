@@ -131,8 +131,9 @@ bool send_robot_state(repeating_timer_t* t)
     data.potval = potval;
     data.left = robot->left->getCount();
     data.right = robot->right->getCount();
+    data.dist = static_cast<int32_t>(dist);
     robot->interface->send_msg(data.pack());
-    std::cout << "pot val: " << potval << " wz: " << wz << " dist: " << dist << " lcount: " << robot->left->getCount() << 
+    std::cout << "pot val: " << potval << " dist: " << dist <<" wz: " << wz << " lcount: " << robot->left->getCount() << 
                 " rcount: " << robot->right->getCount() << '\n';
     return true;
 }
@@ -176,7 +177,7 @@ int main()
     robot.lidar = &lidar;
     robot.left = &left;
     robot.right = &right;
-    add_repeating_timer_ms(100, send_robot_state, &robot, &send_timer);
+    add_repeating_timer_ms(10, send_robot_state, &robot, &send_timer);
 
 
     char * address;
