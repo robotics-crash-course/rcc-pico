@@ -1,7 +1,7 @@
 #include "rcc_stdlib.h"
 using namespace std;
 
-
+//function returns void and inputs integer
 void blink_led(int time){
     cyw43_arch_gpio_put(0, !cyw43_arch_gpio_get(0)); //blinks LED
     sleep_ms(time);
@@ -17,6 +17,6 @@ int main()
 
     while(true)
     {
-        blink_led(100);
+        blink_led(300); //inputs 0.3 seconds
     }
 }
