@@ -18,7 +18,7 @@ int main()
 
     //Init motors
     Motor motors;
-    MotorInit(&motors, RCC_ENB, RCC_ENA, 1000);
+    MotorInit(&motors, RCC_ENA, RCC_ENB, 1000);
     MotorsOn(&motors);
     printf("AFTER MOTORS");
 
@@ -35,7 +35,7 @@ int main()
         if(!gpio_get(RCC_PUSHBUTTON))
         {
             cout << "PUSHBUTTON PRESSED!\n";
-            MotorPower(&motors, 50, 50);
+            MotorPower(&motors, 60, 50);
             // MotorPower(&motors, -50, 50); //use if rotating
 
             while(true){
@@ -45,12 +45,12 @@ int main()
                     MotorPower(&motors, 0, 0);
                 }
 
-                //use to stay a distance away from object
+                // use to stay a distance away from object
                 // if(distance <= 200){
-                //     MotorPower(&motors, -50, -50);
+                //     MotorPower(&motors, -60, -50);
                 // }
                 // if(distance > 200){
-                //     MotorPower(&motors, 50, 50);
+                //     MotorPower(&motors, 60, 50);
                 // }
             }
         }
