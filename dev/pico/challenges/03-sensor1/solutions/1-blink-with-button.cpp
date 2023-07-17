@@ -16,13 +16,16 @@ int main()
 
     rcc_init_pushbutton(); //init button
 
+    bool blinking = false;
+
     while(true)
     {
-        if(!gpio_get(RCC_PUSHBUTTON))
-        {
-            while(true){
-            blink_led(300); //inputs 0.3 seconds
-            }
+        if(!gpio_get(RCC_PUSHBUTTON)){
+            blinking = true;
+        }
+
+        if (blinking){
+            blink_led(300);
         }
     }
 }
