@@ -17,15 +17,22 @@ int main()
     MotorsOn(&motors);
 
     float scale_factor = 1.2;
+    bool test_state = false;
 
     while(true)
     {
         uint16_t pot_val = adc_read();
         int base_power = static_cast<int>((100*pot_val)/4097); // Scale power from 0-100%
 
-        if(!gpio_get(RCC_PUSHBUTTON))
+        if (!gpio_get(RCC_PUSHBUTTON))
+        {
+            test_state = !test_state;
+        }
+
+        if (test_state)
         {
             MotorPower(&motors, static_cast<int>(base_power*scale_factor), base_power);
+            sleep_ms(100);
         }
     }
 
