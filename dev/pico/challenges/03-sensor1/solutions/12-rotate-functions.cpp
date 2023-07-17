@@ -6,15 +6,16 @@ using namespace std;
 
 // false = Left, True = right
 void rotate90(Motor* motorPointer, Left_Odom* left, Right_Odom* right, bool dir) {
+    int initial_count;
     int current_count;
 
     if (dir) {
-        current_count = left->getCount();
+        initial_count = left->getCount();
     } else {
-        current_count = right->getCount();
+        initial_count = right->getCount();
     }
 
-    while (current_count < (current_count + rot90)) {
+    while (current_count < (initial_count + rot90)) {
         if (dir) {
             MotorPower(motorPointer, 0, 50);
             current_count = right->getCount();
