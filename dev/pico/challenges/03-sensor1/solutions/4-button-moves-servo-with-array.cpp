@@ -13,7 +13,6 @@ int main()
     Servo s3;
     ServoInit(&s3, 18, false, 50);
     ServoOn(&s3);
-    printf("AFTER SERVO");
 
     int positions[10]; //create 1x10 array of integers
 
