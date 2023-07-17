@@ -31,9 +31,6 @@ int main()
 
         if(!gpio_get(RCC_PUSHBUTTON))
         {
-            //perfectly good solution:
-            //MotorPower(&motors, base_power*scale_factor, base_power);
-
             //note: MotorPower accepts integers so its rounded to the nearest integer...
             //can force it to be an integer first using:
             MotorPower(&motors, static_cast<int>(base_power*scale_factor), base_power);
