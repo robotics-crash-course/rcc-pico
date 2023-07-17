@@ -10,9 +10,9 @@ void rotate90(Motor* motorPointer, Left_Odom* left, Right_Odom* right, bool dir)
     int current_count;
 
     if (dir) {
-        initial_count = left->getCount();
-    } else {
         initial_count = right->getCount();
+    } else {
+        initial_count = left->getCount();
     }
 
     while (current_count < (initial_count + rot90)) {
