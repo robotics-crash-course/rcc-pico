@@ -1,6 +1,11 @@
 #include "rcc_stdlib.h"
 using namespace std;
 
+void blink_led(int time){
+    cyw43_arch_gpio_put(0, !cyw43_arch_gpio_get(0)); //blinks LED
+    sleep_ms(time);
+}
+
 int main()
 {
     stdio_init_all();    
@@ -25,6 +30,7 @@ int main()
 
     bool searching = false;
     bool stop = false;
+    bool blinking = false;
     uint16_t distance;
 
     while(true){   
@@ -33,6 +39,7 @@ int main()
         {
             searching = true;
             stop = false;
+            blinking = false;
         }
 
         if(searching){
@@ -46,6 +53,11 @@ int main()
         }
         if(stop){
             MotorPower(&motors, 0, 0); //stop
+            blinking = true;
+        }
+
+        if(blinking){
+            blink_led(300);
         }
     }
 
