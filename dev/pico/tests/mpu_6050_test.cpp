@@ -33,7 +33,7 @@ int main() {
     imu.calibrate();
     while (1) {
         imu.update_pico();
-        printf("Accel: %f, %f, %f\n", imu.getAccelX(), imu.getAccelY(), imu.getAccelZ());
+        printf("Accel: %f, %f, %f\n", imu.getAccelX(), imu.getAccelY(), imu.getAngVelZ());
         sleep_ms(100);
     }
 
