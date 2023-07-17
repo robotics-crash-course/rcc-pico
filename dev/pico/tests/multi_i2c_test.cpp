@@ -6,6 +6,13 @@ int main() {
 
     sleep_ms(1000);
     rcc_init_i2c();
+
+    if(cyw43_arch_init())
+    {
+        cout << "CYW43 init failed!" << "\n";
+    }
+    
+    cyw43_arch_gpio_put(0, 1); //turns on led
     
     //Instantiate IMU and Lidar classes
     MPU6050 imu;
