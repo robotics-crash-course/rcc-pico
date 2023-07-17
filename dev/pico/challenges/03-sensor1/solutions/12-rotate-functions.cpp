@@ -5,12 +5,22 @@ using namespace std;
 #define rot90     65
 
 // false = Left, True = right
-void rotate90(Motor* motorPointer, int current_count, bool dir) {
+void rotate90(Motor* motorPointer, Left_Odom* left, Right_Odom* right, bool dir) {
+    int current_count;
+
+    if (dir) {
+        current_count = left->getCount();
+    } else {
+        current_count = right->getCount();
+    }
+
     while (current_count < (current_count + rot90)) {
         if (dir) {
             MotorPower(motorPointer, 0, 50);
+            current_count = right->getCount();
         } else {
             MotorPower(motorPointer, 50, 0);
+            current_count = left->getCount();
         }
         sleep_ms(100);
     }
@@ -47,9 +57,9 @@ int main()
 
         if(!gpio_get(RCC_PUSHBUTTON))
         {
-            rotate90(&motors, left_count, false);
+            rotate90(&motors, &left, &right, false);
             sleep_ms(100);
-            rotate90(&motors, right_count, true);
+            rotate90(&motors, &left, &right, true);
         }
     }
 
