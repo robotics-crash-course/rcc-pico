@@ -45,7 +45,8 @@ int main()
 
         if(!gpio_get(RCC_PUSHBUTTON))
         {
-            move_forward(&motors, &left, &right, 100);
+            move_forward(&motors, &left, &right, 100); //run for 100 counts
+            MotorPower(&motors, 0, 0); //stop
         }
     }
 
