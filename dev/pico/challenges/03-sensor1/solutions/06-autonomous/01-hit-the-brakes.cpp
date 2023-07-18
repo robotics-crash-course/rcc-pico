@@ -37,22 +37,14 @@ int main()
 
         if(!gpio_get(RCC_PUSHBUTTON))
         {
-            forwards = true;
-            stop = false;
             blinking = false;
-        }
-
-        if(forwards){
             ServoPosition(&s3, 50); //look forwards
-            distance = getFastReading(&lidar); //check lidar
             MotorPower(&motors, 60, 50); //go forwards
-
-            if(distance <= 200){
-                stop = true;
-            }
         }
-        
-        if(stop){
+        //in while loop update!
+        distance = getFastReading(&lidar); //check lidar
+
+        if(distance <= 200){
             MotorPower(&motors, 0, 0); //stop
             blinking = true;
         }
