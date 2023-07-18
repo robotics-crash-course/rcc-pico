@@ -9,7 +9,7 @@ int main() {
 
     rcc_init_i2c(); //setup i2c
 
-    MPU6050 imu; //struct
+    MPU6050 imu; //class
     imu.begin(i2c1); //adds to i2c1
     imu.calibrate(); //hold robot still
 
