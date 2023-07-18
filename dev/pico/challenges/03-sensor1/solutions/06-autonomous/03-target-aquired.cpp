@@ -1,8 +1,6 @@
 #include "rcc_stdlib.h"
 using namespace std;
 
-//DISCLAIMER: DOES NOT WORK YET -jc
-
 int main()
 {
     stdio_init_all();    
@@ -28,67 +26,59 @@ int main()
     VL53L0X lidar;
     rcc_init_lidar(&lidar);
 
-    int positions[10]; //array for servo positions
+    int positions[100]; //array for servo positions
 
-    for (int i = 0; i < 10; ++i) {
-        positions[i] = i*10;  //filling array
+    for (int i = 0; i < 100; ++i) {
+        positions[i] = i;  //filling array 0-99
     }
 
     int i = 0;
-    uint16_t distance;
-    bool looking = false;
-    bool rotating = false;
-    bool located = false;
+    uint16_t distance1;
+    uint16_t distance2;
+    bool searching = false;
     bool stop = false;
-
 
     while(true) {   
 
         if(!gpio_get(RCC_PUSHBUTTON))
         {
-            looking = true;
-            stop = false;
+            searching = true;
         }
 
-        distance = getFastReading(&lidar); //want to always check
+        distance1 = getFastReading(&lidar); //want to always check
+        distance2 = getFastReading(&lidar); //is this hacking?
 
-        if(looking){
-            if(distance >= 200){
+        if(searching){
+            if(distance1 >= 200){
                 ServoPosition(&s3, positions[i]);
+                sleep_ms(100);
                 i++;
-                if (i >= 9){
-                    i = 0;
+                if (i >= 100){
+                    i = 0; //reset counter
                 }
             }
-            else{ //distance less than 200
-                looking = false;
-                rotating = true;
+            else{ //distance1 less than 200
+
+                if (i <= 50){  //object was on left
+                    ServoPosition(&s3, 50); //forwards
+                    MotorPower(&motors, 50, -50); //turn left
+                    if (distance2 <= 200){
+                        stop = true;
+                    }
+                }
+                else{ //object was on right
+                    ServoPosition(&s3, 50);
+                    MotorPower(&motors, -50, 50); //turn right
+                    if (distance2 <= 200){
+                        stop = true;
+                    }
+                }
+
             }
         }
-
-        if(rotating){
-            if (i <= 5){  //object was on left
-                MotorPower(&motors, 50, -50); //turn left
-            }
-            else{ //object was on right
-                MotorPower(&motors, -50, 50); //turn right
-            }
-
-            if (distance <= 200){
-                rotating = false;
-                located = true;
-            }
-        }
-
-        if(located){
-            MotorPower(&motors, 60, 50); //go forward
-            if (distance <= 20){
-                stop = true;
-            }
-        }
-
+        
         if(stop){
-            MotorPower(&motors, 0, 0);
+            MotorPower(&motors, 0,0); //permanently stop
         }
     }
 
