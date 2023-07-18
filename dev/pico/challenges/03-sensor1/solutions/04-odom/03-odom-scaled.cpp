@@ -18,6 +18,7 @@ int main()
 
     float scale_factor = 1.2;
     bool test_state = false;
+    //using this state so that the pot can live update the base_power
 
     while(true)
     {
