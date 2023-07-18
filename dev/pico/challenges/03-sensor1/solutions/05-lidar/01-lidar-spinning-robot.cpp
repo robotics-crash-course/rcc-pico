@@ -28,8 +28,6 @@ int main()
     ServoInit(&s3, 18, false, 50);
     ServoOn(&s3);
 
-    bool searching = false;
-    bool stop = false;
     bool blinking = false;
     uint16_t distance;
 
@@ -37,21 +35,13 @@ int main()
 
         if(!gpio_get(RCC_PUSHBUTTON))
         {
-            searching = true;
-            stop = false;
-            blinking = false;
-        }
-
-        if(searching){
             ServoPosition(&s3, 50); //look forwards
-            distance = getFastReading(&lidar); //check lidar
             MotorPower(&motors, -50, 50); //spin~~
-
-            if(distance <= 200){
-                stop = true;
-            }
         }
-        if(stop){
+
+        distance = getFastReading(&lidar); //check lidar in loop
+
+        if(distance <= 200){
             MotorPower(&motors, 0, 0); //stop
             blinking = true;
         }

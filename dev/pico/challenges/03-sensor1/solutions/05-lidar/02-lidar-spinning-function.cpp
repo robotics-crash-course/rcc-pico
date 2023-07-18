@@ -9,6 +9,7 @@ void blink_led(int time){
 bool searching(Motor* motorPointer, VL53L0X* lidarPointer){
     uint16_t distance = getFastReading(lidarPointer); //check lidar
     MotorPower(motorPointer, -50, 50); //spin~~
+    cout << distance << '\n';
 
     if(distance <= 200){
         return true;
@@ -41,32 +42,20 @@ int main()
     ServoOn(&s3);
 
     bool start_search = false;
-    bool stop = false;
-    bool blinking = false;
 
     while(true){   
 
         if(!gpio_get(RCC_PUSHBUTTON))
         {
             ServoPosition(&s3, 50); //look forwards
-            start_search = true;
-            stop = false;
-            blinking = false;
+            start_search = true; //need to figure out way to avoid this??
         }
 
         if(start_search){
             if(searching(&motors, &lidar)){ //returns true when object detected
-                stop = true;
-            }; 
-        }
-
-        if(stop){
-            MotorPower(&motors, 0, 0); //stop
-            blinking = true;
-        }
-
-        if(blinking){
-            blink_led(300);
+                MotorPower(&motors, 0, 0); //stop
+                blink_led(300);
+            }
         }
     }
 

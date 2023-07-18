@@ -61,6 +61,7 @@ int main()
             rotate90(&motors, &left, &right, false);
             sleep_ms(100);
             rotate90(&motors, &left, &right, true);
+            MotorPower(&motors, 0,0); //stop motors
         }
     }
 
