@@ -9,7 +9,7 @@ int main()
     cyw43_arch_gpio_put(0, 1); //turns on led
 
     rcc_init_i2c(); //setup pico i2c
-    VL53L0X lidar; //struct
+    VL53L0X lidar; //class 
     rcc_init_lidar(&lidar); //setup lidar
 
     while(true)

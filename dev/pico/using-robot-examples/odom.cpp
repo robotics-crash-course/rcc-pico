@@ -8,8 +8,8 @@ int main()
     cyw43_arch_init();
     cyw43_arch_gpio_put(0, 1); //turns on led
 
-    Left_Odom left; //struct
-    Right_Odom right; //struct
+    Left_Odom left; //class
+    Right_Odom right; //class
     
     while(true)
     {
