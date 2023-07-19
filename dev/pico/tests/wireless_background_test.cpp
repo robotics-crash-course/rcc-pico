@@ -6,6 +6,8 @@
 #include <rcc_wireless_msg_interface.h>
 
 // using namespace std;
+uint32_t Ts = 50;
+float theta = 0;
 
 void WirelessMsgInterface::packet_receiver(Packet p) {
     this->send_msg(p);
@@ -125,8 +127,12 @@ bool send_robot_state(repeating_timer_t* t)
     float wz = robot->imu->getAngVelZ();
     uint16_t dist = getFastReading(robot->lidar);
     uint16_t potval = adc_read();
+    theta = theta + (wz*Ts/1000.0);
+    uint32_t time = time_us_32();
 
     Sensor_Data data;
+    data.time = (int32_t)time;
+    data.theta = theta;
     data.wz = wz;
     data.potval = potval;
     data.left = robot->left->getCount();
@@ -166,6 +172,7 @@ int main()
     interface.setup_wireless_interface();    
     MPU6050 imu;
     imu.begin(i2c1);
+    imu.calibrate();
     VL53L0X lidar;
     rcc_init_lidar(&lidar);
     Left_Odom left;
@@ -177,7 +184,7 @@ int main()
     robot.lidar = &lidar;
     robot.left = &left;
     robot.right = &right;
-    add_repeating_timer_ms(10, send_robot_state, &robot, &send_timer);
+    add_repeating_timer_ms(Ts, send_robot_state, &robot, &send_timer);
 
 
     char * address;
