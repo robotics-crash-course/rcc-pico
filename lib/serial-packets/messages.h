@@ -83,11 +83,13 @@ struct Sensor_Data {
 	Sensor_Data();
 	Sensor_Data(const Packet&);
 
+	int32_t time;
 	int32_t potval;
 	int32_t dist;
 	float wz;
 	int32_t left;
 	int32_t right;
+	float theta;
 };
 
 #endif

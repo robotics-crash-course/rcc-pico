@@ -85,17 +85,17 @@ Sensor_Data::Sensor_Data() {
 }
 
 Sensor_Data::Sensor_Data(const Packet& p) {
-	std::tie(potval, dist, wz, left, right) = 
-	deserialize<int32_t, int32_t, float, int32_t, int32_t>(p.data());
+	std::tie(time, potval, dist, wz, left, right, theta) = 
+	deserialize<int32_t, int32_t, int32_t, float, int32_t, int32_t, float>(p.data());
 }
 
 Packet Sensor_Data::pack() {
 	return Packet(
 		Sensor_Data::id,
 		serialize<
-		int32_t, int32_t, float, int32_t, int32_t
+		int32_t, int32_t, int32_t, float, int32_t, int32_t, float
 		>(std::make_tuple(
-			potval, dist, wz, left, right
+			time, potval, dist, wz, left, right, theta
 		))
 	);
 }

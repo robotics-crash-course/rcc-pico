@@ -68,9 +68,9 @@ class CommsController():
 		return self.inbound.get()
 	
 class WirelessInterface:
-	picoip = '192.168.1.249'
+	picoip = '192.168.0.104'
 	porttopico = 9900
-	computerip = '192.168.1.247'
+	computerip = '192.168.0.229'
 	porttocomputer = 9999
 	picohostname = 'PICOHOME'
 	computerhostname = 'localhost'

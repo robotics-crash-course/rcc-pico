@@ -34,6 +34,8 @@ macro(make_exec exec_name exec_dir)
                             WIFI_SSID=\"${WIFI_SSID}\"
                             WIFI_PASSWORD=\"${WIFI_PASSWORD}\"
                             CYW43_HOST_NAME=\"${CYW43_HOST_NAME}\"
+                            IP_RECV=\"${IP_RECV}\"
+                            IP_SEND=\"${IP_SEND}\"
 
                         # Forced values for WIFI params
                             # WIFI_SSID=<"MY_WIFI_ROUTER"

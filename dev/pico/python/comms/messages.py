@@ -141,29 +141,29 @@ class Twist:
 class Sensor_Data:
 	def __init__(self, msg):
 		self.id_ = 501
-		self.packet_spec = (Int32, Int32, Float, Int32, Int32)
+		self.packet_spec = (Int32, Int32, Int32, Float, Int32, Int32, Float)
 
 		if type(msg) is Packet:
 			self.from_pack(msg)
 			return None
 		if type(msg) is tuple:
 			[
-				self.potentiometer, self.dist, self.angVelZ, 
-				self.leftCount, self.rightCount
+				self.time, self.potentiometer, self.dist, self.angVelZ, 
+				self.leftCount, self.rightCount, self.theta
 			] = [
-				msg[0], msg[1], msg[2], msg[3], msg[4]
+				msg[0], msg[1], msg[2], msg[3], msg[4], msg[5], msg[6]
 			]
 		else:
 			[
-				self.potentiometer, self.dist, self.angVelZ, 
-				self.leftCount, self.rightCount
+				self.time, self.potentiometer, self.dist, self.angVelZ, 
+				self.leftCount, self.rightCount, self.theta
 			] = [
-				msg.potentiometer, msg.dist, msg.angVelZ, 
-				msg.leftCount, msg.rightCount
+				msg.time, msg.potentiometer, msg.dist, msg.angVelZ, 
+				msg.leftCount, msg.rightCount, msg.theta
 			]
 		self.fields = [
-				self.potentiometer, self.dist, self.angVelZ, 
-				self.leftCount, self.rightCount
+				self.time, self.potentiometer, self.dist, self.angVelZ, 
+				self.leftCount, self.rightCount, self.theta
 			]
 
 	def pack(self):
@@ -175,15 +175,15 @@ class Sensor_Data:
 	
 	def from_pack(self,p):
 		[
-			self.potentiometer, self.dist, self.angVelZ, 
-			self.leftCount, self.rightCount
+			self.time, self.potentiometer, self.dist, self.angVelZ, 
+			self.leftCount, self.rightCount, self.theta
 		], _ = deserialize(
-			(Int32, Int32, Float, Int32, Int32),
+			(Int32, Int32, Int32, Float, Int32, Int32, Float),
 			p.data()
 		)
 		self.fields = [
-				self.potentiometer, self.dist, self.angVelZ, 
-				self.leftCount, self.rightCount
+				self.time, self.potentiometer, self.dist, self.angVelZ, 
+				self.leftCount, self.rightCount, self.theta
 			]
 		
 	def __repr__(self):
