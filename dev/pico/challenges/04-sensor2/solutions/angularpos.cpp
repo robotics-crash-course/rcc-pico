@@ -32,7 +32,6 @@ int main() {
     // float deltat = 0.01; //100Hz
     // float deltat = 0.001; //1kHz
     bool stop = false;
-    bool moving = false;
 
     cyw43_arch_gpio_put(0, 0); //turns off led
     sleep_ms(100);
@@ -55,8 +54,7 @@ int main() {
 
         cout << sum << '\n';
 
-        if(sum >= (360.0) || sum <= -(360.0)){
-            cyw43_arch_gpio_put(0, 0); //turns off led
+        if(sum >= (360.0)){
             stop = true;
         }
 
