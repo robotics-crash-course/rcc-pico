@@ -18,12 +18,12 @@ int main() {
     imu.begin(i2c1); //adds to i2c1
     imu.calibrate(); //hold robot still
 
-    int64_t timestep = 40000; //25 Hz in microseconds
+    int64_t timestep = 2000; //400 Hz in microseconds
     int64_t current_time = 0;
     int64_t previous_time = 0;
     float sum = 0;
     float angvel_z = 0.0;
-    float deltat = 0.04; //25Hz in seconds
+    float deltat = 0.002; // in seconds
     previous_time = time_us_64();
     current_time = time_us_64();
     bool stop = false;
@@ -34,7 +34,7 @@ int main() {
         
         if(!gpio_get(RCC_PUSHBUTTON))
         {
-            MotorPower(&motors, 60, -50);
+            MotorPower(&motors, 50, -50);
         }
 
         //this block says wait 
