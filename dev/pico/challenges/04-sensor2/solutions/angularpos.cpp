@@ -1,6 +1,15 @@
 #include "rcc_stdlib.h"
 using namespace std;
 
+void calculateAngle(int *sum, int64_t current_time, int64_t previous_time, int64_t timestep, float dt, MPU6050* imu) {
+    if((current_time - previous_time) >= timestep){ //int math
+        previous_time = current_time; //reset previous time
+        imu->update_pico(); 
+        int angvel_z = imu->getAngVelZ(); //deg per sec
+        *sum += angvel_z*dt; //float math
+    }
+}
+
 int main() {
     stdio_init_all();
     sleep_ms(1500);
