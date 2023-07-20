@@ -4,6 +4,7 @@ using namespace std;
 //define global constants 
 #define WHEEL_RADIUS 0.04 //meters
 #define COUNTS_PER_ROTATION 40 
+#define IMU_FREQ 500 //Hz
 
 int distanceToCounts(float distance){
     /*
@@ -56,19 +57,21 @@ int main() {
     imu.calibrate(); //hold robot still
     sleep_ms(200); //wait a bit
 
-    int64_t timestep = 2000; //500 Hz in microseconds
-    // int64_t timestep = 2500; //400 Hz in microseconds
-    // int64_t timestep = 10000; //100Hz
-    // int64_t timestep = 1000; //1kHz
-    int64_t current_time = time_us_64();
-    int64_t previous_time = time_us_64();
-    float sum = 0;
-    float angvel_z = 0.0;
-    float deltat = 0.002; // 500 Hz in seconds
-    // float deltat = 0.0025; // 400 Hz in seconds
-    // float deltat = 0.01; //100Hz
-    // float deltat = 0.001; //1kHz
-    bool stop = false;
+    float angle_pos = 0.0; //angular position of robot
+    float angvel_z; //imu returns a float
+    float dt_s = hertz_to_s(IMU_FREQ); //seconds
+    int dt_us = hertz_to_us(IMU_FREQ); //microseconds
+
+    //track time since pico started
+    int64_t current_time = time_us_64(); 
+    int64_t previous_time = time_us_64(); 
+
+
+    //because of ~physics~ may need to adjust
+    //note: this is a positive rotation about the z-axis
+    float deg_spin = 90.0;
+
+    bool stop = false; //use to stop until RESET
 
     //this blinks the led so we know it's done calibrating
     cyw43_arch_gpio_put(0, 0); //turns off led
@@ -77,27 +80,35 @@ int main() {
 
     while(true) 
     {
-        if(!stop){
-            MotorPower(&motors, -75, 60);
+        //if button pressed, spin!
+        if(!gpio_get(RCC_PUSHBUTTON)){
+            //note: need to make sure spinning positively around z axis
+            MotorPower(&motors, -75, 60); //spinnnnnn~~
         }
 
-        current_time = time_us_64(); //get current time
+        //update current time
+        current_time = time_us_64(); 
 
-        if((current_time - previous_time) >= timestep){ //int math
-            previous_time = current_time; //reset previous time
+        //if difference between current time and previous time is long enough
+        if((current_time - previous_time) >= dt_us){ 
+            //get IMU data
             imu.update_pico(); 
             angvel_z = imu.getAngVelZ(); //deg per sec
-            sum += angvel_z*deltat; //float math
+            //sum area of rectangles aka integrate (units are seconds)
+            angle_pos += angvel_z*dt_s; 
+            //make previous time the same as current time
+            previous_time = current_time; 
         }
 
-        cout << sum << '\n';
+        // cout << "dt_s" << dt_s << " dt_us"<< dt_us<< " pos" <<angle_pos << '\n';
 
-        if(sum >= (360.0)){
+        //check if we spun long enough
+        if(angle_pos >= deg_spin){
             stop = true;
         }
 
         if(stop){
-            MotorPower(&motors, 0,0);
+            MotorPower(&motors, 0,0); //stop until RESET
         }
     }
 }
