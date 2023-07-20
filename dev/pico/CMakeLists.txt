@@ -99,7 +99,5 @@ endmacro()
 # make_exec(back_emf_test tests/back_emf_test.cpp)
 
 # Lessons
-# make_exec(helloworld lessons/01/helloworld.cpp)
+make_exec(helloworld lessons/01/helloworld.cpp)
 # make_exec(debug lessons/01/debug.cpp)
-make_exec(timertest challenges/04-sensor2/solutions/angularpos.cpp)
-
