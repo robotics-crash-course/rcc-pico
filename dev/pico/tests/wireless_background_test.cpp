@@ -1,16 +1,17 @@
 #define DEBUG
-#define SEND_DEBUG
+// #define SEND_DEBUG
 #define RECV_DEBUG
+// #define UDP_RECV_DEBUG
 
 #include "rcc_stdlib.h"
 #include <rcc_wireless_msg_interface.h>
 
-// using namespace std;
-uint32_t Ts = 50;
+using namespace std;
+uint32_t Ts = 1000;
 float theta = 0;
 
 void WirelessMsgInterface::packet_receiver(Packet p) {
-    this->send_msg(p);
+    // this->send_msg(p);
     switch (p.id()) {
     case 0:
         break;
@@ -41,6 +42,13 @@ void WirelessMsgInterface::packet_receiver(Packet p) {
             move.velocity
         };
         cout << tout.pack();
+        break;
+    }
+
+    case Sensor_Data::id: {
+        #ifdef RECV_DEBUG
+            cout << "[RECV_DEBUG]: GOT SENSOR DATA!\n";
+        #endif
         break;
     }
 
@@ -193,8 +201,8 @@ int main()
     printf("This PICO's IP address is: %s\n", address);
 
     while(true)
-    {   
-        mutex_enter_blocking(&interface.mtx);
+    {   uint32_t ownerout;
+        mutex_try_enter(&interface.mtx, &ownerout);
         Packet p;
         interface.msg_stream >> p;
         inter_thread_message m(p);
