@@ -102,7 +102,7 @@ Packet Sensor_Data::pack() {
 
 std::string Sensor_Data::repr() {
 	std::stringstream ss;
-	ss << "Sensor_Data<potval: " << potval << " dist: " << dist <<
-	" wz: " << wz << " left: " << left << " right: " << right << '\n';
+	ss << "Sensor_Data<time: " << time << " potval: " << potval << " dist: " << dist <<
+	" wz: " << wz << " left: " << left << " right: " << right << " theta: " << theta << '\n';
 	return ss.str();
 }
