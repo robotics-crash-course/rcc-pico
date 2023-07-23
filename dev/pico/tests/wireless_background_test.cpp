@@ -7,7 +7,7 @@
 #include <rcc_wireless_msg_interface.h>
 
 using namespace std;
-uint32_t Ts = 1000;
+uint32_t Ts = 100;
 float theta = 0;
 
 void WirelessMsgInterface::packet_receiver(Packet p) {
@@ -46,8 +46,9 @@ void WirelessMsgInterface::packet_receiver(Packet p) {
     }
 
     case Sensor_Data::id: {
+        Sensor_Data data(p);
         #ifdef RECV_DEBUG
-            cout << "[RECV_DEBUG]: GOT SENSOR DATA!\n";
+            cout << "[RECV_DEBUG]: " << data.repr().c_str();
         #endif
         break;
     }
