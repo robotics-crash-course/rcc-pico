@@ -7,7 +7,7 @@
 #include <rcc_wireless_msg_interface.h>
 
 using namespace std;
-uint32_t Ts = 100;
+uint32_t Ts = 1000;
 float theta = 0;
 
 void WirelessMsgInterface::packet_receiver(Packet p) {

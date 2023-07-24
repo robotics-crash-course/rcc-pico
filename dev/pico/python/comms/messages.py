@@ -187,5 +187,5 @@ class Sensor_Data:
 			]
 		
 	def __repr__(self):
-		return f'Sensor_Data<{self.potentiometer}, {self.dist}, {self.angVelZ}, {self.leftCount}, {self.rightCount}>'
+		return f'Sensor_Data<{self.time}, {self.potentiometer}, {self.dist}, {self.angVelZ}, {self.leftCount}, {self.rightCount}, {self.theta}>'
 	
