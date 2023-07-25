@@ -62,5 +62,6 @@ State Machine Challenges (sm_challenges/smchallenges.html)
 - ★★★ Target acquired (in a state machine)
 - ★★★ Travel thru tunnel
 - ★★★ Find 3 objects
+- ★★★ Detecting Slip
 
 
