@@ -1,0 +1,66 @@
+Challenges Checklist 
+
+Instructions:
+switch the '-' to a '✔️' once completed:)
+
+_______________________________________________________________
+Sensor Challenges 1 (sensor_challenges/sensorchallenges1.html)
+
+LED
+    - blinking led with a function (using sleep_ms())
+Button
+    - button calls blinking function 
+    - button changes servo position
+    - ★★ button indexes thru an array
+
+Motor Characterization
+    - Determine which motor is faster
+
+Odometry
+    - stop robot after moving forward 200 counts
+    - travel 200 counts with a scale_factor to go semi-straight
+    - confirm number of counts per rotation of wheel
+    Keeping one wheel still:
+        - measure number of counts for 360 degree rotation
+        - measure number of counts for 90 degree rotation
+    ★★★ writing functions:
+        - right turn (based on counts)
+        - left turn (based on counts)
+        - go forward, input number of counts 
+
+Lidar
+    - rotate robot, stop when detect object
+    - ★★★ put ^ in a function
+
+Autonomous
+    - drive forwards, stop when object detected (hit the brakes)
+    - ★★ stay 20 cm from an object
+    - ★★★ target acquired 
+
+IMU data
+    - measure angular velocity when spinning at full power
+    - ★★★ intro to controls with desired angular velocity
+
+_______________________________________________________________
+Sensor Challenges 2 (sensor_challenges/sensorchallenges2.html)
+
+Unit conversions:
+    - Convert 1 meter to number of counts
+    - ★★ write function that converts counts to meters
+    Keeping one wheel still:
+        - ★★ write function that converts arc length to meters
+        - ★★ Make 90 degree turn using counts
+
+Integrating Angle from Angular Velocity
+- use integrator to stop after 90 degree turn
+
+_______________________________________________________________
+State Machine Challenges (sm_challenges/smchallenges.html)
+
+- blink led using previous & current time
+- ★★ Follow at a distance (with tolerance)
+- ★★★ Target acquired (in a state machine)
+- ★★★ Travel thru tunnel
+- ★★★ Find 3 objects
+
+
