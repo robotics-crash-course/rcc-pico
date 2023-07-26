@@ -152,6 +152,10 @@ bool print_things(repeating_timer_t* t)
     return true;
 }
 
+void stupid_func(int i) {
+    return;
+}
+
 int main()
 {
     uint delay_length;
@@ -196,7 +200,7 @@ int main()
 
     while(true)
     {   
-        interface.get_msg_timeout(void (*packet_receiver)(Packet), 10000);
+        interface.get_msg_timeout(&packet_receiver, 10000);
         tight_loop_contents();
     }
 

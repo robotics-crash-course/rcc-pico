@@ -65,7 +65,7 @@ class WirelessMsgInterface
         void* send_packet_to_queue(Packet);
         bool init_cyw43();
         void packet_receiver(Packet);
-        void get_msg_timeout(void (*func)(void), uint64_t);
+        void get_msg_timeout(void (*func)(Packet), uint64_t);
         bool has_packet;
         lwip_infra_t lwip_infra;
         stringstream msg_stream;
