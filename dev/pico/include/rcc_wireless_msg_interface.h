@@ -65,10 +65,13 @@ class WirelessMsgInterface
         void* send_packet_to_queue(Packet);
         bool init_cyw43();
         void packet_receiver(Packet);
+        void get_msg_timeout(void (*func)(void), uint64_t);
+        bool has_packet;
         lwip_infra_t lwip_infra;
         stringstream msg_stream;
         string msg;
         mutex_t mtx;
+
 };
 
 WirelessMsgInterface::WirelessMsgInterface(string ip_send, string ip_recv, uint32_t port_send, uint32_t port_recv)
@@ -86,6 +89,27 @@ WirelessMsgInterface::WirelessMsgInterface(string ip_send, string ip_recv, uint3
     ip_addr_t ipnetif = netif_list->ip_addr;
     lwip_infra.ip_recv = ipnetif;
     mutex_init(&mtx);
+}
+
+void WirelessMsgInterface::get_msg_timeout(void (*func)(Packet), uint64_t duration) {
+    if(this->has_packet){
+    uint32_t ownerout;
+    mutex_try_enter(&this->mtx, &ownerout);
+    Packet p;
+    this->msg_stream >> p;
+    inter_thread_message m(p);
+    if(!this->msg_stream)
+    {   
+        // printf("Pack failed!\n");  
+    }
+    else{
+        func(p);
+    }
+    mutex_exit(&this->mtx);
+    }
+    else {
+        return;
+    }
 }
 
 
@@ -123,6 +147,7 @@ void WirelessMsgInterface::recv_msg( void* arg,              // User argument - 
             #ifdef UDP_RECV_DEBUG
                 printf("[UDP_RECV_DEBUG]: Received msg!\n");
             #endif 
+            interface->has_packet = true;
             mutex_exit(&interface->mtx);
     }
 

@@ -1,6 +1,6 @@
 #define DEBUG
 // #define SEND_DEBUG
-#define RECV_DEBUG
+// #define RECV_DEBUG
 // #define UDP_RECV_DEBUG
 
 #include "rcc_stdlib.h"
@@ -10,7 +10,7 @@ using namespace std;
 uint32_t Ts = 100;
 float theta = 0;
 
-void WirelessMsgInterface::packet_receiver(Packet p) {
+void packet_receiver(Packet p) {
     // this->send_msg(p);
     switch (p.id()) {
     case 0:
@@ -68,13 +68,6 @@ void WirelessMsgInterface::packet_receiver(Packet p) {
 
 bool init_cyw43()
 {
-    // if (!cyw43_arch_init()) {
-    //     printf("failed to initialise\n");
-    //     return false;;
-    // }
-
-    // cyw43_arch_enable_sta_mode();
-
     //Attempt connection
     if (cyw43_arch_wifi_connect_timeout_ms(WIFI_SSID, WIFI_PASSWORD, CYW43_AUTH_WPA2_AES_PSK, 10000)) {
         printf("failed to connect.\n");
@@ -202,21 +195,9 @@ int main()
     printf("This PICO's IP address is: %s\n", address);
 
     while(true)
-    {   uint32_t ownerout;
-        mutex_try_enter(&interface.mtx, &ownerout);
-        Packet p;
-        interface.msg_stream >> p;
-        inter_thread_message m(p);
-        if(!interface.msg_stream)
-        {   
-            // printf("Pack failed!\n");  
-        }
-        else{
-            interface.packet_receiver(p);
-        }
-        mutex_exit(&interface.mtx);
-        sleep_ms(100);
-
+    {   
+        interface.get_msg_timeout(void (*packet_receiver)(Packet), 10000);
+        tight_loop_contents();
     }
 
     cyw43_arch_deinit();
