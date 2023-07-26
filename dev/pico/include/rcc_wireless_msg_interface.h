@@ -93,19 +93,19 @@ WirelessMsgInterface::WirelessMsgInterface(string ip_send, string ip_recv, uint3
 
 void WirelessMsgInterface::get_msg_timeout(void (*func)(Packet), uint64_t duration) {
     if(this->has_packet){
-    uint32_t ownerout;
-    mutex_try_enter(&this->mtx, &ownerout);
-    Packet p;
-    this->msg_stream >> p;
-    inter_thread_message m(p);
-    if(!this->msg_stream)
-    {   
-        // printf("Pack failed!\n");  
-    }
-    else{
-        func(p);
-    }
-    mutex_exit(&this->mtx);
+        uint32_t ownerout;
+        mutex_try_enter(&this->mtx, &ownerout);
+        Packet p;
+        this->msg_stream >> p;
+        inter_thread_message m(p);
+        if(!this->msg_stream)
+        {   
+            // printf("Pack failed!\n");  
+        }
+        else{
+            func(p);
+        }
+        mutex_exit(&this->mtx);
     }
     else {
         return;
