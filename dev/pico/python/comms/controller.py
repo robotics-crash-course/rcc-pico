@@ -163,6 +163,8 @@ def packet_receive_demux(p):
 
 if __name__ == "__main__":
 	c = WirelessController(WirelessInterface)
+	c.start_inbound()
+	c.start_outbound()
 
 	f1 = 0.0
 	f2 = 1.0
@@ -177,12 +179,12 @@ if __name__ == "__main__":
 		time.sleep(loop_time/3)
 		tout = Twist((1.5, 0.05))
 		pout = tout.pack()
-		c.send(pout)
 
 		print(f'sending:    {tout}')
 		print(f'packet out: {pout}')
 
 		time.sleep(loop_time/3)
 		while c.has_packet():
+			c.outbound.put(pout)
 			pin = c.get_packet()
-			packet_receive(pin)
+			packet_receive_demux(pin)
