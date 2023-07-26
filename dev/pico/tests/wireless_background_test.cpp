@@ -1,7 +1,7 @@
 #define DEBUG
 // #define SEND_DEBUG
-// #define RECV_DEBUG
-// #define UDP_RECV_DEBUG
+#define RECV_DEBUG
+#define UDP_RECV_DEBUG
 
 #include "rcc_stdlib.h"
 #include <rcc_wireless_msg_interface.h>
@@ -201,7 +201,7 @@ int main()
     while(true)
     {   
         interface.get_msg_timeout(&packet_receiver, 10000);
-        tight_loop_contents();
+        sleep_ms(100);
     }
 
     cyw43_arch_deinit();
