@@ -201,7 +201,7 @@ int main()
     while(true)
     {   
         interface.get_msg_timeout(&packet_receiver, 10000);
-        sleep_ms(100);
+        // sleep_ms(100);
     }
 
     cyw43_arch_deinit();
