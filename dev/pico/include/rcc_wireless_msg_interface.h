@@ -105,6 +105,7 @@ void WirelessMsgInterface::get_msg_timeout(void (*func)(Packet), uint64_t durati
         else{
             func(p);
         }
+        this->has_packet = false; //Update packet status
         mutex_exit(&this->mtx);
     }
     else {
