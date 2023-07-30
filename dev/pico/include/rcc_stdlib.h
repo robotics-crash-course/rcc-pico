@@ -50,6 +50,6 @@ void rcc_init_i2c(void)
     i2c_init(i2c1, 100 * 1000);
     gpio_set_function(RCC_I2C_SCL, GPIO_FUNC_I2C);
     gpio_set_function(RCC_I2C_SDA, GPIO_FUNC_I2C);
-    gpio_pull_up(RCC_I2C_SCL);
-    gpio_pull_up(RCC_I2C_SDA);
+    // gpio_pull_up(RCC_I2C_SCL);
+    // gpio_pull_up(RCC_I2C_SDA);
 }
