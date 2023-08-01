@@ -17,6 +17,9 @@ Differentiator::Differentiator(float sigma, float ts)
 	beta = (2.0 * sigma - ts) / (2.0 * sigma + ts);
 }
 
+/// @brief 
+/// @param y the incoming sample to use for differentiation
+/// @return the band limited derivative at this sample
 float Differentiator::differentiate(float y)
 {
 	// calculate derivative
@@ -27,12 +30,17 @@ float Differentiator::differentiate(float y)
 	return y_dot;
 }
 
+/// @brief 
+/// @param degrees the value we want the "previous sample" to have after the reset
 void Differentiator::reset(float degrees)
 {
 	y_dot = 0;
 	y_d1  = degrees;
 }
 
+/// @brief 
+/// @param ts : sample time (s)
+/// @param sigma  : bandwidth of the low pass filter applied (1/cutoff-freq)
 void Differentiator::setTimeParameters(float ts, float sigma)
 {
 	this->ts    = ts;
