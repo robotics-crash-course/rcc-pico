@@ -47,6 +47,7 @@ void rcc_init_pushbutton(void)
 //I2C init
 void rcc_init_i2c(void)
 {
+//Start I2C BUS recovery
     gpio_pull_up(RCC_I2C_SCL);
     gpio_pull_up(RCC_I2C_SDA);
     gpio_set_function(RCC_I2C_SCL, GPIO_FUNC_SIO);
@@ -55,13 +56,21 @@ void rcc_init_i2c(void)
     gpio_set_dir(RCC_I2C_SDA, true);
     gpio_put(RCC_I2C_SDA, true);
     
-    for(int i=0; i<9; i++){
+    //Toggle SCL line 16 times to release potential devices waiting to receive/send data
+    for(int i=0; i<16; i++){
         gpio_put(RCC_I2C_SCL, true);
         sleep_us(10);
         gpio_put(RCC_I2C_SCL, false);
         sleep_us(10);
     }
+    //Generate stop condition (SCL HIGH, SDA RISING EDGE)
+    gpio_put(RCC_I2C_SCL, true);
+    gpio_put(RCC_I2C_SDA, false);
+    sleep_us(10);
+    gpio_put(RCC_I2C_SDA, true);
+    sleep_us(10);
 
+    //Hopefully I2C Bus has been released by peripherial device, init i2c and set gpio funcs
     i2c_init(i2c1, 100 * 1000);
     gpio_set_function(RCC_I2C_SCL, GPIO_FUNC_I2C);
     gpio_set_function(RCC_I2C_SDA, GPIO_FUNC_I2C);
