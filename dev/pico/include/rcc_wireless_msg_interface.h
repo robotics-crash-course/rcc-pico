@@ -39,7 +39,7 @@ Packet inter_thread_message::pack() {
 	return Packet(id, s);
 }
 
-//Struct of the comms lwip_infrastructure (ips, ports)
+/// @brief Struct of the comms lwip_infrastructure (ips, ports)
 typedef struct lwip_infra_s
 {
     struct udp_pcb* pcb_recv;
@@ -91,6 +91,9 @@ WirelessMsgInterface::WirelessMsgInterface(string ip_send, string ip_recv, uint3
     mutex_init(&mtx);
 }
 
+/// @brief Poll this func to get a message
+/// @param func Function pointer to the function that will unpack the message
+/// @param duration Timeout duration (not implemented atm)
 void WirelessMsgInterface::get_msg_timeout(void (*func)(Packet), uint64_t duration) {
     if(this->has_packet){
         uint32_t ownerout;
@@ -113,13 +116,17 @@ void WirelessMsgInterface::get_msg_timeout(void (*func)(Packet), uint64_t durati
     }
 }
 
-
-//UDP Callback Fcn
-void WirelessMsgInterface::recv_msg( void* arg,              // User argument - udp_recv `arg` parameter
-                           struct udp_pcb* upcb,   // Receiving Protocol Control Block
-                           struct pbuf* p,         // Pointer to Datagram
-                           const ip_addr_t* addr,  // Address of sender
-                           u16_t port )            // Sender port 
+/// @brief UDP packet recieve callback
+/// @param arg : User defined args as void pointer
+/// @param upcb : Receiving Protocol control block
+/// @param p    : Pointer to Datagram
+/// @param addr : Address of sender
+/// @param port : Sender port
+void WirelessMsgInterface::recv_msg( void* arg,  
+                           struct udp_pcb* upcb, 
+                           struct pbuf* p,       
+                           const ip_addr_t* addr,
+                           u16_t port )          
 {
 
     WirelessMsgInterface* interface = (WirelessMsgInterface*)arg;
@@ -158,38 +165,20 @@ void WirelessMsgInterface::recv_msg( void* arg,              // User argument - 
 
 
 
+/// @brief Setup lwip for incoming udp packets and sending udp packets
 void WirelessMsgInterface::setup_wireless_interface()
 {
     //Initialize udp receive and callback
     // const ip_addr_t ip_recv = lwip_infra.ip_recv;
-    udp_bind(lwip_infra.pcb_recv, &lwip_infra.ip_recv, lwip_infra.port_recv); //Bind the pico ipaddr to port 9990
+    udp_bind(lwip_infra.pcb_recv, &lwip_infra.ip_recv, lwip_infra.port_recv); //Bind the pico ipaddr to port 9900
     udp_recv(lwip_infra.pcb_recv, this->recv_msg, this); //Setup recv callback fcn
 }
 
+/// @brief Send a message but in packet form
+/// @param pack The message as a Packet to be send
+/// @return True if successful, False (not implemented atm)
 bool WirelessMsgInterface::send_msg(Packet pack)
 {
-    // //place holder variables for data
-    // int32_t packet_id;
-    // float field_1, field_2, field_3;
-    // field_1 = 133;
-    // field_2 = 233;
-    // field_3=444;
-
-    // Twist out;
-    // out.linear = 1.3;
-    // out.angular = 0.5;
-
-    // // stringify the data
-    // std::string ack = base64_encode(
-    //     serialize<float, float, float>(
-    //         make_tuple(
-    //             field_2,
-    //             field_2,
-    //             field_3
-    //         )
-    //     )
-    // );
-    // // Packet packet(Test_Outbound::id, ack.c_str());
     Packet packet;
     packet = pack;
 
