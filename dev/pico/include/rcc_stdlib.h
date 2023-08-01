@@ -71,7 +71,7 @@ void rcc_init_i2c(void)
     gpio_put(RCC_I2C_SDA, true);
     sleep_us(10);
 
-    //Hopefully I2C Bus has been released by peripherial device, init i2c and set gpio funcs
+    //Hopefully I2C Bus has been released by peripheral device, init i2c and set gpio funcs
     i2c_init(i2c1, 100 * 1000);
     gpio_set_function(RCC_I2C_SCL, GPIO_FUNC_I2C);
     gpio_set_function(RCC_I2C_SDA, GPIO_FUNC_I2C);
