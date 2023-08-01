@@ -27,6 +27,13 @@ typedef struct
     uint in4;
 } Motor;
 
+typedef struct
+{
+    Servo red; 
+    Servo blue; 
+    Servo green;
+} RGBled;
+
 uint32_t pwm_set_freq_duty(uint slice_num, uint chan, uint32_t f, int d)
 {
     uint32_t clock = 125000000;
@@ -119,6 +126,17 @@ void MotorsOn(Motor *m)
     m->right.on = true;
 }
 
+void LEDOn(RGBled *m)
+{
+    pwm_set_enabled(m->red.slice, true);
+    pwm_set_enabled(m->green.slice, true);
+    pwm_set_enabled(m->blue.slice, true);
+
+    m->red.on = true;
+    m->green.on = true;
+    m->blue.on = true;
+}
+
 //Shut all motors off
 void MotorsOff(Motor *m)
 {
@@ -167,6 +185,42 @@ void MotorInit(Motor *m, uint gpio_l, uint gpio_r, uint freq)
     m->in2 = RCC_IN2;
     m->in3 = RCC_IN3;
     m->in4 = RCC_IN4;
+}
+
+void LedInit(RGBled *m, uint gpio_r, uint gpio_g, uint gpio_b, uint freq)
+{
+    MotorInitGPIO(gpio_r);
+    MotorInitGPIO(gpio_g);
+    MotorInitGPIO(gpio_b);
+
+    gpio_set_function(gpio_r, GPIO_FUNC_PWM);
+    gpio_set_function(gpio_g, GPIO_FUNC_PWM);
+    gpio_set_function(gpio_b, GPIO_FUNC_PWM);
+
+    m->red.slice = pwm_gpio_to_slice_num(gpio_r);
+    m->green.slice = pwm_gpio_to_slice_num(gpio_g);
+    m->blue.slice = pwm_gpio_to_slice_num(gpio_b);
+
+    m->red.chan = pwm_gpio_to_channel(gpio_r);
+    m->green.chan = pwm_gpio_to_channel(gpio_g);
+    m->blue.chan = pwm_gpio_to_channel(gpio_b);
+
+    m->red.gpio = gpio_r;
+    m->green.gpio = gpio_g;
+    m->blue.gpio = gpio_b;
+
+    m->red.resolution = pwm_set_freq_duty(m->red.slice, m->red.chan, freq, 0);
+    m->green.resolution = pwm_set_freq_duty(m->green.slice, m->green.chan, freq, 0);
+    m->blue.resolution = pwm_set_freq_duty(m->blue.slice, m->blue.chan, freq, 0);
+
+}
+
+void LEDPower(RGBled *m, int r, int g, int b)
+{
+    pwm_set_duty(m->red.gpio, r);
+    pwm_set_duty(m->green.gpio, g);
+    pwm_set_duty(m->blue.gpio, b);
+
 }
 
 
