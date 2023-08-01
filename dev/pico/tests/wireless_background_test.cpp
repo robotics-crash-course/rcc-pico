@@ -106,7 +106,7 @@ typedef struct robot_conglomerate_s{
 robot_conglomerate_t* default_robot_conglomerate() { 
   robot_conglomerate_t* robot = (robot_conglomerate_t*)malloc(sizeof(robot_conglomerate_t));
 
-  WirelessMsgInterface* interface = new WirelessMsgInterface(IP_SEND, IP_RECV, PORT_SEND, PORT_RECV);
+  WirelessMsgInterface* interface = new WirelessMsgInterface(COMP_IP, PICO_IP, TO_COMP_PORT, TO_PICO_PORT);
   interface->setup_wireless_interface();
   MPU6050* imu = new MPU6050();
   imu->begin(i2c1);
@@ -174,7 +174,7 @@ int main()
     cyw43_arch_gpio_put(0,1);
     cyw43_arch_enable_sta_mode();
     init_cyw43();
-    WirelessMsgInterface interface(IP_SEND, IP_RECV, PORT_SEND, PORT_RECV);
+    WirelessMsgInterface interface(COMP_IP, PICO_IP, TO_COMP_PORT, TO_PICO_PORT);
     interface.setup_wireless_interface();    
     MPU6050 imu;
     imu.begin(i2c1);
@@ -194,8 +194,8 @@ int main()
 
 
     char * address;
-    interface.lwip_infra.ip_recv = netif_list->ip_addr;
-    address = ipaddr_ntoa(&interface.lwip_infra.ip_recv);
+    interface.lwip_infra.comp_ip = netif_list->ip_addr;
+    address = ipaddr_ntoa(&interface.lwip_infra.comp_ip);
     printf("This PICO's IP address is: %s\n", address);
 
     while(true)

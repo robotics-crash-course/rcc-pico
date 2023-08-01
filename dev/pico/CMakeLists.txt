@@ -34,8 +34,8 @@ macro(make_exec exec_name exec_dir)
                             WIFI_SSID=\"${WIFI_SSID}\"
                             WIFI_PASSWORD=\"${WIFI_PASSWORD}\"
                             CYW43_HOST_NAME=\"${CYW43_HOST_NAME}\"
-                            IP_RECV=\"${IP_RECV}\"
-                            IP_SEND=\"${IP_SEND}\"
+                            PICO_IP=\"${PICO_IP}\"
+                            COMP_IP=\"${COMP_IP}\"
 
                         # Forced values for WIFI params
                             # WIFI_SSID=<"MY_WIFI_ROUTER"
@@ -74,7 +74,7 @@ macro(make_exec exec_name exec_dir)
 
 endmacro()
 
-make_exec(wireless tests/wireless_interface_test.cpp)
+# make_exec(wireless tests/wireless_interface_test.cpp)
 make_exec(wireless_background tests/wireless_background_test.cpp)
 # make_exec(mpu6050_test tests/mpu_6050_test.cpp)
 # make_exec(lidar_test tests/lidar_test.cpp)

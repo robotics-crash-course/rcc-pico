@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include "pico/mutex.h"
 
-#define PORT_SEND 9999
-#define PORT_RECV 9900
+#define TO_COMP_PORT 9999
+#define TO_PICO_PORT 9900
 #define BEACON_MSG_LEN_MAX 500
 // #define IP_SEND "192.168.1.35" //Computers IP
 // #define IP_RECV "192.168.1.37" //Picos IP
@@ -44,10 +44,10 @@ typedef struct lwip_infra_s
 {
     struct udp_pcb* pcb_recv;
     struct udp_pcb* pcb_send;
-    ip_addr_t ip_recv; //This is the picos ip addr
-    ip_addr_t ip_send; //this is the lapttop ip addr
-    uint16_t port_recv;
-    uint16_t port_send;
+    ip_addr_t pico_ip; //This is the picos ip addr
+    ip_addr_t comp_ip; //this is the lapttop ip addr
+    uint16_t to_pico_port;
+    uint16_t to_comp_port;
 } lwip_infra_t;
 
 class WirelessMsgInterface
@@ -74,20 +74,20 @@ class WirelessMsgInterface
 
 };
 
-WirelessMsgInterface::WirelessMsgInterface(string ip_send, string ip_recv, uint32_t port_send, uint32_t port_recv)
+WirelessMsgInterface::WirelessMsgInterface(string comp_ip, string pico_ip, uint32_t to_comp_port, uint32_t to_pico_port)
 {
     this->lwip_infra.pcb_recv = udp_new();
     this->lwip_infra.pcb_send = udp_new();
-    this->lwip_infra.port_send = 9999;
-    this->lwip_infra.port_recv = 9900;
-    ipaddr_aton(ip_recv.c_str(), &(this->lwip_infra.ip_recv)); 
-    ipaddr_aton(ip_send.c_str(), &(this->lwip_infra.ip_send));
-    printf("DEBUG: ip_send %s | %s\n", IP_SEND, ipaddr_ntoa(&this->lwip_infra.ip_send));
-    printf("DEBUG: ip_recv %s | %s\n", IP_RECV, ipaddr_ntoa(&this->lwip_infra.ip_recv));
+    this->lwip_infra.to_comp_port = 9999;
+    this->lwip_infra.to_pico_port = 9900;
+    ipaddr_aton(pico_ip.c_str(), &(this->lwip_infra.pico_ip)); 
+    ipaddr_aton(comp_ip.c_str(), &(this->lwip_infra.comp_ip));
+    printf("DEBUG: comp_ip %s | %s\n", COMP_IP, ipaddr_ntoa(&this->lwip_infra.comp_ip));
+    printf("DEBUG: pico_ip %s | %s\n", PICO_IP, ipaddr_ntoa(&this->lwip_infra.pico_ip));
     
     //Get the ip address we've been given
     ip_addr_t ipnetif = netif_list->ip_addr;
-    lwip_infra.ip_recv = ipnetif;
+    lwip_infra.pico_ip = ipnetif;
     mutex_init(&mtx);
 }
 
@@ -160,8 +160,8 @@ void WirelessMsgInterface::recv_msg( void* arg,              // User argument - 
 void WirelessMsgInterface::setup_wireless_interface()
 {
     //Initialize udp receive and callback
-    // const ip_addr_t ip_recv = lwip_infra.ip_recv;
-    udp_bind(lwip_infra.pcb_recv, &lwip_infra.ip_recv, lwip_infra.port_recv); //Bind the pico ipaddr to port 9990
+    // const ip_addr_t pico_ip = lwip_infra.pico_ip;
+    udp_bind(lwip_infra.pcb_recv, &lwip_infra.pico_ip, lwip_infra.to_pico_port); //Bind the pico ipaddr to port 9990
     udp_recv(lwip_infra.pcb_recv, this->recv_msg, this); //Setup recv callback fcn
 }
 
@@ -201,7 +201,7 @@ bool WirelessMsgInterface::send_msg(Packet pack)
     s << packet;
     snprintf(req, BEACON_MSG_LEN_MAX, "%s", s.str().c_str()); //instead get the package stsring
 
-    err_t er = udp_sendto(lwip_infra.pcb_send, p, &lwip_infra.ip_send, PORT_SEND); //Send the string over udp
+    err_t er = udp_sendto(lwip_infra.pcb_send, p, &lwip_infra.comp_ip, TO_COMP_PORT); //Send the string over udp
     pbuf_free(p);
 
     if (er != ERR_OK) {
