@@ -47,9 +47,22 @@ void rcc_init_pushbutton(void)
 //I2C init
 void rcc_init_i2c(void)
 {
+    gpio_pull_up(RCC_I2C_SCL);
+    gpio_pull_up(RCC_I2C_SDA);
+    gpio_set_function(RCC_I2C_SCL, GPIO_FUNC_SIO);
+    gpio_set_function(RCC_I2C_SDA, GPIO_FUNC_SIO);
+    gpio_set_dir(RCC_I2C_SCL, true);
+    gpio_set_dir(RCC_I2C_SDA, true);
+    gpio_put(RCC_I2C_SDA, true);
+    
+    for(int i=0; i<9; i++){
+        gpio_put(RCC_I2C_SCL, true);
+        sleep_us(10);
+        gpio_put(RCC_I2C_SCL, false);
+        sleep_us(10);
+    }
+
     i2c_init(i2c1, 100 * 1000);
     gpio_set_function(RCC_I2C_SCL, GPIO_FUNC_I2C);
     gpio_set_function(RCC_I2C_SDA, GPIO_FUNC_I2C);
-    gpio_pull_up(RCC_I2C_SCL);
-    gpio_pull_up(RCC_I2C_SDA);
 }
