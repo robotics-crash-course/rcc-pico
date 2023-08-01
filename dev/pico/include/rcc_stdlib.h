@@ -64,8 +64,9 @@ void rcc_init_i2c(void)
         sleep_us(10);
     }
     //Generate stop condition (SCL HIGH, SDA RISING EDGE)
-    gpio_put(RCC_I2C_SCL, true);
     gpio_put(RCC_I2C_SDA, false);
+    sleep_us(10);
+    gpio_put(RCC_I2C_SCL, true);
     sleep_us(10);
     gpio_put(RCC_I2C_SDA, true);
     sleep_us(10);
