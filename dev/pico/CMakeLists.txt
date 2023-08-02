@@ -74,9 +74,17 @@ macro(make_exec exec_name exec_dir)
 
 endmacro()
 
+# macro template
+# make_exec(arg1 arg2)
+# arg1 = desired uf2 name
+# arg2 = location of cpp file relative to the current /pico directory 
+
+# Test files
 # make_exec(wireless tests/wireless_interface_test.cpp)
 make_exec(wireless_background tests/wireless_background_test.cpp)
 # make_exec(mpu6050_test tests/mpu_6050_test.cpp)
+# make_exec(lidar_test tests/lidar_test.cpp)
+# make_exec(multi_i2c_test tests/multi_i2c_test.cpp)
 # make_exec(lidar_test tests/lidar_test.cpp)
 # make_exec(multi_i2c_test tests/multi_i2c_test.cpp)
 # make_exec(hcsr04_test tests/hcsr04_test.cpp)

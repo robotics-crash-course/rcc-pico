@@ -3,3 +3,4 @@
 .venv/
 build/
 *.rcc_venv/
+.DS_store

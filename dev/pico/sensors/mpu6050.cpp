@@ -84,6 +84,8 @@ void MPU6050::begin(i2c_inst_t* i2c_inst)
 // 	begin();
 // }
 
+/// @brief Measure all values 100 times and calc average, push into bias values.
+/// @param  
 void MPU6050::calibrate(void)
 {
 	float ax_sum = 0;
@@ -189,6 +191,8 @@ float MPU6050::getTemp(void)
 // 	raw_wz   = (wire->read() << 8) | wire->read();
 // }
 
+/// @brief Read all data from the mpu6050 and store into class variables (Note: These are the raw values, bias is applied in the get funcs)
+/// @param  
 void MPU6050::update_pico(void)
 {
 	uint8_t buffer[14];

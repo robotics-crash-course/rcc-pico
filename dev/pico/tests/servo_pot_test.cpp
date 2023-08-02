@@ -14,12 +14,15 @@ int main(void)
     
     cyw43_arch_gpio_put(0, true);
 
-    Servo s1;
-    Servo s2;
-    ServoInit(&s1, 16, false, 50);
-    ServoInit(&s2, 17, false, 50);
-    ServoOn(&s1);
-    ServoOn(&s2);
+    // Servo s1;
+    // Servo s2;
+    Servo s3;
+    // ServoInit(&s1, 16, false, 50);
+    // ServoInit(&s2, 17, false, 50);
+    ServoInit(&s3, 18, false, 50); 
+    // ServoOn(&s1);
+    // ServoOn(&s2);
+    ServoOn(&s3);
     
     while(true)
     {   
@@ -28,10 +31,9 @@ int main(void)
         cout << "Pot val: " << pot_val << 
             " pos: " << 180*pot_val/4097 <<
             "\n";
-        ServoPosition(&s1, 100*pot_val/4097);
-        ServoPosition(&s2, 100*pot_val/4097);
+        // ServoPosition(&s1, 100*pot_val/4097);
+        // ServoPosition(&s2, 100*pot_val/4097);
+        ServoPosition(&s3, 100*pot_val/4097);
         cyw43_arch_gpio_put(0, !(cyw43_arch_gpio_get(0)));
-        
-
     }
 }
