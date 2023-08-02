@@ -10,17 +10,20 @@ using namespace std;
 uint32_t Ts = 100;
 float theta = 0;
 
+/// @brief Demux for the incoming packets
+/// @param p : A message in packet form
 void packet_receiver(Packet p) {
-    // this->send_msg(p);
-    switch (p.id()) {
+    switch (p.id()) { // Swith on the id of the packet
     case 0:
         break;
+
     case Test_Outbound::id: {
         #ifdef DEBUG
             printf("[DEBUG]: TEST OUTBOUND RECEIVED!\n");
         #endif
         break;
     }
+
     case Twist::id:
     {
         Twist twist(p);
@@ -29,19 +32,8 @@ void packet_receiver(Packet p) {
         #endif
         break;
     }
+
     case Position::id: {
-        break;
-    }
-
-    case Simple_Move::id: {
-        Simple_Move move(p);
-
-        Test_Outbound tout {
-            move.distance,
-            move.curvature,
-            move.velocity
-        };
-        cout << tout.pack();
         break;
     }
 
@@ -59,13 +51,15 @@ void packet_receiver(Packet p) {
     default:
         // nothing (yet, at least)
         #ifdef RECV_DEBUG
-        printf("[RECV_DEBUG]: Invalid Packet | id: %u | data: %s\n", p.id(), p.data().c_str());
+            printf("[RECV_DEBUG]: Invalid Packet | id: %u | data: %s\n", p.id(), p.data().c_str());
         #endif
         break;
     }
 
 }
 
+/// @brief Initialize wireless module to connect. TODO: Put other cyw43 related startup funcs here
+/// @return True:success, False:failure
 bool init_cyw43()
 {
     //Attempt connection
@@ -121,6 +115,9 @@ typedef struct robot_sensor_data_s{
     float wz;
 }robot_sensor_data_t;
 
+/// @brief Using the robot_conglomerate_t update all sensors and send Sensor_Data msg over wifi
+/// @param t The repeating timer (make sure user_data has pointer to robot_conglomerate_t)
+/// @return True always
 bool send_robot_state(repeating_timer_t* t)
 {
     //Get all sensor data
@@ -146,31 +143,21 @@ bool send_robot_state(repeating_timer_t* t)
     return true;
 }
 
-bool print_things(repeating_timer_t* t)
-{
-    std::cout << "Is this printing?\n";
-    return true;
-}
-
-void stupid_func(int i) {
-    return;
-}
-
 int main()
 {
     uint delay_length;
     repeating_timer_t send_timer;
     rcc_init_i2c();
     rcc_init_potentiometer();
-    
     stdio_init_all();    
     sleep_ms(1000);
+
+    //Initialize the wireless device for communication
     if (cyw43_arch_init()) {
-        printf("failed to initialise\n");
+        cout << "Failed to initialise, aborting\n";
         return 1;
     }
-    std::cout << "Initialized cyw43 arch\n";
-
+    cout << "Initialized cyw43 arch\n";
     cyw43_arch_gpio_put(0,1);
     cyw43_arch_enable_sta_mode();
     init_cyw43();
@@ -184,15 +171,21 @@ int main()
     Left_Odom left;
     Right_Odom right;
 
+    // Turn on the LED to make sure i2c devs aren't holding the bus
+    cyw43_arch_gpio_put(0, 1);
+
+    // Put members into instance of robot_conglomerate_t
     robot_conglomerate_t robot;
     robot.imu = &imu;
     robot.interface = &interface;
     robot.lidar = &lidar;
     robot.left = &left;
     robot.right = &right;
+
+    // Have send_robot_state get called every Ts seconds
     add_repeating_timer_ms(Ts, send_robot_state, &robot, &send_timer);
 
-
+    // Update lwip_infra ip if router gave us a diff ip and print so we can update externally
     char * address;
     interface.lwip_infra.comp_ip = netif_list->ip_addr;
     address = ipaddr_ntoa(&interface.lwip_infra.comp_ip);
@@ -200,10 +193,14 @@ int main()
 
     while(true)
     {   
+        // Check if msg has come in, deserialize it, and take action dependent on which msg it is
         interface.get_msg_timeout(&packet_receiver, 10000);
-        sleep_ms(100);
+        
+        // Do other NON BLOCKING code here!
+        
     }
 
+    // Exit program, deinit wireless module first
     cyw43_arch_deinit();
     return 0;
 }
