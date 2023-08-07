@@ -187,8 +187,8 @@ int main()
 
     // Update lwip_infra ip if router gave us a diff ip and print so we can update externally
     char * address;
-    interface.lwip_infra.comp_ip = netif_list->ip_addr;
-    address = ipaddr_ntoa(&interface.lwip_infra.comp_ip);
+    interface.lwip_infra.pico_ip = netif_list->ip_addr;
+    address = ipaddr_ntoa(&interface.lwip_infra.pico_ip);
     printf("This PICO's IP address is: %s\n", address);
 
     while(true)
