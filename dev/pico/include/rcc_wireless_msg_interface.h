@@ -84,6 +84,8 @@ WirelessMsgInterface::WirelessMsgInterface(string comp_ip, string pico_ip, uint3
     ipaddr_aton(comp_ip.c_str(), &(this->lwip_infra.comp_ip));
     printf("DEBUG: comp_ip %s | %s\n", COMP_IP, ipaddr_ntoa(&this->lwip_infra.comp_ip));
     printf("DEBUG: pico_ip %s | %s\n", PICO_IP, ipaddr_ntoa(&this->lwip_infra.pico_ip));
+    cout << "DEBUG: to_comp_port: " << TO_COMP_PORT << "\n";
+    cout << "DEBUG: to_pico_port: " << TO_PICO_PORT << "\n";
     
     //Get the ip address we've been given
     ip_addr_t ipnetif = netif_list->ip_addr;
@@ -156,7 +158,7 @@ void WirelessMsgInterface::recv_msg( void* arg,
                 printf("[UDP_RECV_DEBUG]: Received msg!\n");
             #endif
             #ifdef UDP_RECV_DEBUG_DEEP 
-                cout << "[UDP_RECV_DEBUG_DEEP]:" << "ip: " << addr << " port: " << port << " data: " << data;
+                cout << "[UDP_RECV_DEBUG_DEEP]:" << "ip: " << ipaddr_ntoa(addr) << " data: " << data;
             #endif
             interface->has_packet = true;
             mutex_exit(&interface->mtx);
