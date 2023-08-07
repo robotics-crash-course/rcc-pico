@@ -9,8 +9,8 @@
 #define TO_COMP_PORT 9999
 #define TO_PICO_PORT 9900
 #define BEACON_MSG_LEN_MAX 500
-// #define IP_SEND "192.168.1.35" //Computers IP
-// #define IP_RECV "192.168.1.37" //Picos IP
+// #define COMP_IP "192.168.1.35" //Computers IP
+// #define PICO_IP "192.168.1.37" //Picos IP
 #define BEACON_INTERVAL_MS 100
 
 using namespace std;
