@@ -65,14 +65,20 @@ void packet_receiver(Packet p) {
 bool init_cyw43()
 {
     //Attempt connection
-    if (cyw43_arch_wifi_connect_timeout_ms(WIFI_SSID, WIFI_PASSWORD, CYW43_AUTH_WPA2_AES_PSK, 10000)) {
-        cout << "Failed to connect to:" << WIFI_SSID << " with pass: " << WIFI_PASSWORD << "\n";
-
-        return false;
-    } else {
-        
-        return true;
+    for(int i=0; i<10; i++){
+        cout << "Connection attempt #" << i << "\n";
+        if (cyw43_arch_wifi_connect_timeout_ms(WIFI_SSID, WIFI_PASSWORD, CYW43_AUTH_WPA2_AES_PSK, 10000)) {
+            cout << "Failed to connect to:" << WIFI_SSID << " with pass: " << WIFI_PASSWORD << "\n";
+            ip_addr_t temp;
+            ipaddr_aton("0.0.0.0", &temp);
+            if(netif_list->ip_addr.addr == temp.addr) { cout << "Got useless ip addr (0.0.0.0), retrying\n"; }
+            else{return false;}
+        } else {
+            
+            return true;
+        }
     }
+    return false;
 
 }
 
