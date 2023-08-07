@@ -81,7 +81,8 @@ endmacro()
 
 # Test files
 # make_exec(wireless tests/wireless_interface_test.cpp)
-make_exec(wireless_background tests/wireless_background_test.cpp)
+# make_exec(wireless_background tests/wireless_background_test.cpp)
+make_exec(wheadless tests/wireless_headless_test.cpp)
 # make_exec(mpu6050_test tests/mpu_6050_test.cpp)
 # make_exec(lidar_test tests/lidar_test.cpp)
 # make_exec(multi_i2c_test tests/multi_i2c_test.cpp)

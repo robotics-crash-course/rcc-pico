@@ -152,9 +152,12 @@ void WirelessMsgInterface::recv_msg( void* arg,
             // inter_thread_message m(out.pack());
             // inter_thread_message m(tmp.str());
             // interface->msg_stream << m.s;
-            #ifdef UDP_RECV_DEBUG
+            #ifdef UDP_RECV_DEBUG 
                 printf("[UDP_RECV_DEBUG]: Received msg!\n");
-            #endif 
+            #endif
+            #ifdef UDP_RECV_DEBUG_DEEP 
+                cout << "[UDP_RECV_DEBUG_DEEP]:" << data;
+            #endif
             interface->has_packet = true;
             mutex_exit(&interface->mtx);
     }
