@@ -156,7 +156,7 @@ void WirelessMsgInterface::recv_msg( void* arg,
                 printf("[UDP_RECV_DEBUG]: Received msg!\n");
             #endif
             #ifdef UDP_RECV_DEBUG_DEEP 
-                cout << "[UDP_RECV_DEBUG_DEEP]:" << data;
+                cout << "[UDP_RECV_DEBUG_DEEP]:" << "ip: " << addr << " port: " << port << " data: " << data;
             #endif
             interface->has_packet = true;
             mutex_exit(&interface->mtx);
@@ -172,7 +172,7 @@ void WirelessMsgInterface::recv_msg( void* arg,
 void WirelessMsgInterface::setup_wireless_interface()
 {
     //Initialize udp receive and callback
-    // const ip_addr_t pico_ip = lwip_infra.pico_ip;
+    // const ip_addr_t pico_ip =send lwip_infra.pico_ip;
     udp_bind(lwip_infra.pcb_recv, &lwip_infra.pico_ip, lwip_infra.to_pico_port); //Bind the pico ipaddr to port 9990
     udp_recv(lwip_infra.pcb_recv, this->recv_msg, this); //Setup recv callback fcn
 }
