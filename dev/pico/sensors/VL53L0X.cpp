@@ -52,6 +52,17 @@ bool rcc_init_lidar(VL53L0X* l)
     return true;
 }
 
+bool rcc_init_lidar_single(VL53L0X* l)
+{
+    l->setBus(i2c1);
+    l->setTimeout(200);
+    if(!l->init())
+    {
+        return false;
+    }
+    return true;
+}
+
 // Constructors ////////////////////////////////////////////////////////////////
 
 VL53L0X::VL53L0X()

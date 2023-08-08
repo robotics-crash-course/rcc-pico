@@ -19,9 +19,9 @@ int main()
 
     while(true)
     {
-        uint16_t dist = getFastReading(&lidar);
+        // uint16_t dist = getFastReading(&lidar);
+        uint16_t dist = lidar.readRangeSingleMillimeters();
         printf("Distance (mm): %hu\n", dist);
-        cout << lidar.timeoutOccurred() << '\n';
-        sleep_ms(100);
+        // sleep_ms(10);
     }
 }
