@@ -9,7 +9,7 @@ int main(void)
     cyw43_arch_gpio_put(0, true); //led on
 
     Motor motors; //struct setup
-    MotorInit(&motors, RCC_ENB, RCC_ENA, 1000); //setup 
+    MotorInit(&motors, RCC_ENA, RCC_ENB, 1000); //setup 
     MotorsOn(&motors); //enable PWM
 
     while(true)

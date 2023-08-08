@@ -2,4 +2,5 @@
 *__pycache__/
 .venv/
 build/
-*.rcc_venc/
+*.rcc_venv/
+.DS_store

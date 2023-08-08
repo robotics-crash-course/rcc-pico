@@ -12,9 +12,9 @@
 
 class Differentiator {
 private:
-	float sigma;
-	float ts;
-	float beta;
+	float sigma; //Bandwith of the band limited derivative
+	float ts; //sample time (1/freq)
+	float beta; //Constant calculated from sigma
 
 	float y_dot = 0.0;
 	float y_d1  = 0.0;
