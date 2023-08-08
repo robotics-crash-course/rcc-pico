@@ -176,6 +176,7 @@ class VL53L0X
 
 uint16_t getFastReading(VL53L0X*);
 bool rcc_init_lidar(VL53L0X* l);
+bool rcc_init_lidar_single(VL53L0X* l);
 #endif
 
 
