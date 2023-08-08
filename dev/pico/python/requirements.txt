@@ -5,7 +5,8 @@ PyQt5-Qt5==5.15.2
 PyQt5-sip==12.12.1
 pyqtgraph==0.13.3
 pyserial==3.5
-PySide2==5.15.2.1
+PySide2
 PythonQwt==0.10.2
 QtPy==2.3.1
-shiboken2==5.15.2.1
+shiboken2
+pynput
