@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
-set(CMAKE_C_STANDARD 11) 
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 
@@ -15,12 +15,12 @@ add_subdirectory(util)
 
 macro(make_exec exec_name exec_dir)
     add_executable(${exec_name} ${exec_dir})
-    
+
     pico_add_extra_outputs(${exec_name})
 
     pico_enable_stdio_usb(${exec_name} 1)
     pico_enable_stdio_uart(${exec_name} 0)
-    
+
 # For debugging with openocd (comment out above)
     # pico_enable_stdio_usb(${exec_name} 0)
     # pico_enable_stdio_uart(${exec_name} 1)
@@ -41,7 +41,7 @@ macro(make_exec exec_name exec_dir)
 
                         # Pico Sdk
                             PICO_MAX_SHARED_IRQ_HANDLERS=6 #IMPORTANT!! It seems default shared irq is 2, we need more.
-                            
+
                         # Related to wireless capabilities
                             # PICO_CYW43_ARCH_BACKGROUND
     )
@@ -51,7 +51,7 @@ macro(make_exec exec_name exec_dir)
                             ${PICO_SDK_PATH}
                             wireless/include #TODO: Turn into CMake compatible directory (lib)
                             include
-                            
+
     )
 
     target_link_libraries(${exec_name}
@@ -74,7 +74,7 @@ endmacro()
 # macro template
 # make_exec(arg1 arg2)
 # arg1 = desired uf2 name
-# arg2 = location of cpp file relative to the current /pico directory 
+# arg2 = location of cpp file relative to the current /pico directory
 
 # Test files
 # make_exec(wireless tests/wireless_interface_test.cpp)
@@ -97,6 +97,7 @@ endmacro()
 # make_exec(back_emf_test tests/back_emf_test.cpp)
 # make_exec(servo_forward tests/servo_forward.cpp)
 # make_exec(back_emf_test tests/back_emf_test.cpp)
+make_exec(multi_lidar_test tests/multi_lidar_test.cpp)
 
 # Lessons
 make_exec(helloworld lessons/01/helloworld.cpp)
