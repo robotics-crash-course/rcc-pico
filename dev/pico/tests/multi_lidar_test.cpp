@@ -39,41 +39,6 @@ int main()
       lidar[i].startContinuous();
     }
 
-
-    /*lidar[0].setBus(i2c1);
-    lidar[0].setTimeout(200);
-    lidar[0].init();
-    //first_lidar.startContinuous(0);
-
-    lidar[1].setBus(i2c1);
-    lidar[1].setTimeout(200);
-    lidar[1].init();
-    //second_lidar.startContinuous(0);
-
-    gpio_init(0);
-    gpio_init(1);
-
-    // set as outputs
-    gpio_set_dir(0, true);
-    gpio_set_dir(1, true);
-
-    // set to 0
-    gpio_put(0, false);
-    gpio_put(1, false);
-
-//Activate lidar 1
-    sleep_ms(100);
-    // change to input (should go low)
-    gpio_set_dir(1, false);
-    sleep_ms(100);
-
-    lidar[1].setAddress(ADDRESS_SECONDARY);
-    sleep_ms(100);
-    // set to high
-    gpio_put(0, true);
-    sleep_ms(100);
-    */
-
     while(true)
     {
         sleep_ms(100);
