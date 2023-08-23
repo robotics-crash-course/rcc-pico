@@ -27,6 +27,14 @@ typedef struct
     uint in4;
 } Motor;
 
+typedef struct
+{
+    Servo forward; //PWM1
+    Servo backward; //PWM2
+    uint EN; 
+    uint ENB;
+} CarrieDrive;
+
 uint32_t pwm_set_freq_duty(uint slice_num, uint chan, uint32_t f, int d)
 {
     uint32_t clock = 125000000;
@@ -119,6 +127,14 @@ void MotorsOn(Motor *m)
     m->right.on = true;
 }
 
+void CarrieDriveOn(CarrieDrive *m)
+{
+    pwm_set_enabled(m->forward.slice, true);
+    pwm_set_enabled(m->backward.slice, true);
+    m->forward.on = true;
+    m->backward.on = true;
+}
+
 //Shut all motors off
 void MotorsOff(Motor *m)
 {
@@ -169,6 +185,30 @@ void MotorInit(Motor *m, uint gpio_l, uint gpio_r, uint freq)
     m->in4 = RCC_IN4;
 }
 
+/*  Initialize BOTH motors!
+    freq: The pwm frequency. You can hear the frequency if you make it low enough!
+*/
+void CarrieDriveInit(CarrieDrive *m, uint gpio_1, uint gpio_2, uint gpio_EN, uint gpio_ENB, uint freq)
+{
+    MotorInitGPIO(gpio_1);
+    MotorInitGPIO(gpio_2);
+    gpio_set_function(gpio_1, GPIO_FUNC_PWM);
+    gpio_set_function(gpio_2, GPIO_FUNC_PWM);
+    m->forward.slice = pwm_gpio_to_slice_num(gpio_1);
+    m->backward.slice = pwm_gpio_to_slice_num(gpio_2);
+    m->forward.chan = pwm_gpio_to_channel(gpio_1);
+    m->backward.chan = pwm_gpio_to_channel(gpio_2);
+    m->forward.gpio = gpio_1;
+    m->backward.gpio = gpio_2;
+    m->forward.resolution = pwm_set_freq_duty(m->forward.slice, m->forward.chan, freq, 0);
+    m->backward.resolution = pwm_set_freq_duty(m->backward.slice, m->backward.chan, freq, 0);
+
+    MotorInitGPIO(gpio_EN);
+    MotorInitGPIO(gpio_ENB);
+    m->EN = gpio_EN;
+    m->ENB = gpio_ENB;
+}
+
 
 void MotorPower(Motor *m, int lp, int rp)
 {
@@ -199,4 +239,22 @@ void MotorPower(Motor *m, int lp, int rp)
     // pwm_set_dutyF(m->right.slice, m->right.chan, std::abs(rp));
     pwm_set_duty(m->left.gpio, abs(lp));
     pwm_set_duty(m->right.gpio, abs(rp));
+}
+
+void CarrieDrivePower(CarrieDrive *m, int rp) //rear power
+{
+    if(rp > 0) //forwards
+    {
+        pwm_set_duty(m->forward.gpio, abs(rp));
+        gpio_put(m->backward.gpio, 0);
+        gpio_put(m->EN, 1);
+        gpio_put(m->ENB, 0);
+    }
+    else 
+    { 
+        pwm_set_duty(m->backward.gpio, abs(rp));
+        gpio_put(m->forward.gpio, 0);
+        gpio_put(m->EN, 1);
+        gpio_put(m->ENB, 0);
+    }
 }
