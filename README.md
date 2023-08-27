@@ -11,9 +11,11 @@ Copyright (C) 2022-2023  Jeannette Circe [`<jett@circe.com>`]
 
 Copyright (C) 2023  Andy Jaku [`<andyjaku13@gmail.com>`]
 
-Copyright (C) 2020  Andrew Lorber [`<andrewlorber@aol.com>`]
+Copyright (C) 2023  Catherine Van West [`<cat@vanwestco.com>`]
 
 Copyright (C) 2022  Jacob Koziej [`<jacobkoziej@gmail.com>`]
+
+Copyright (C) 2020  Andrew Lorber [`<andrewlorber@aol.com>`]
 
 Distributed under the [GPLv3] or later.
 
@@ -23,4 +25,5 @@ Distributed under the [GPLv3] or later.
 [`<andyjaku13@gmail.com>`]: mailto:andyjaku13@gmail.com
 [`<andrewlorber@aol.com>`]: mailto:andrewlorber@aol.com
 [`<jacobkoziej@gmail.com>`]: mailto:jacobkoziej@gmail.com
+[`<cat@vanwestco.com>`]: mailto:cat@vanwestco.com
 [GPLv3]: LICENSE.md
