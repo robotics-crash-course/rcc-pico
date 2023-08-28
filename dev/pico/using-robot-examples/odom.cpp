@@ -16,12 +16,13 @@ int main()
         int left_count = left.getCount(); //gets current count
         int right_count = right.getCount();
 
-        if (left_count>=100){
-            left.setZero(); //resets count
-        }	
-        if (right_count>=200){
-            right.setZero(); //resets count
-        }
+        // //use if want to reset counts
+        // if (left_count>=100){
+        //     left.setZero(); //resets count
+        // }	
+        // if (right_count>=200){
+        //     right.setZero(); //resets count
+        // }
 
         cout << left_count << " | " << right_count << "\n";
         sleep_ms(100);

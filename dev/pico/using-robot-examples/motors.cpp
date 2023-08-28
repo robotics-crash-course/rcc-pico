@@ -14,6 +14,6 @@ int main(void)
 
     while(true)
     {   
-        MotorPower(&motors, 100, 100); 
+        MotorPower(&motors, 100, 100);  //both forward at full power
     }
 }
