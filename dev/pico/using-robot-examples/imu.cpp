@@ -16,8 +16,10 @@ int main() {
     while(true) 
     {
         imu.update_pico(); //updates data
-        float angvel_z = imu.getAngVelZ(); //call function to get data
-        cout <<" z rotation: " << angvel_z << "\n";
+        float accel_x = imu.getAccelX(); //call function to get data
+        float accel_y = imu.getAccelY();
+        float angvel_z = imu.getAngVelZ(); 
+        cout <<"x accel: "<< accel_x <<" y accel: "<< accel_y <<" z rotation: " << angvel_z << "\n";
         sleep_ms(100);
     }
 }
