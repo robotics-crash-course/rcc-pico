@@ -101,4 +101,5 @@ make_exec(multi_lidar_test tests/multi_lidar_test.cpp)
 
 # Lessons
 make_exec(helloworld lessons/01/helloworld.cpp)
+make_exec(procon tests/servo_valve.cpp)
 # make_exec(debug lessons/01/debug.cpp)
