@@ -6,14 +6,6 @@ struct sensor_data{
     int btn_val;
 };
 
-void update_sensor_data(struct sensor_data* d)
-{
-    //Update sensor_data
-    d->btn_val=gpio_get(RCC_PUSHBUTTON);
-    d->pot_val=adc_read();
-    update_led(d);
-}
-
 void update_led(struct sensor_data* d)
 {
     if(d->btn_val == 1) { return; }
@@ -23,6 +15,14 @@ void update_led(struct sensor_data* d)
         if(d->pot_val <= 2000) { cyw43_arch_gpio_put(0, 0); }
         
     }
+}
+
+void update_sensor_data(struct sensor_data* d)
+{
+    //Update sensor_data
+    d->btn_val=gpio_get(RCC_PUSHBUTTON);
+    d->pot_val=adc_read();
+    update_led(d);
 }
 
 sensor_data s_data;
