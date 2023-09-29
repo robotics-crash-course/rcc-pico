@@ -12,10 +12,12 @@ int main()
 
     while(true)
     {   
-        if(!gpio_get(RCC_PUSHBUTTON)) //if NOT gpio (if gpio is low)
+        if(!gpio_get(RCC_PUSHBUTTON)) //if button pressed
         {
-            //change state of LED
-            cyw43_arch_gpio_put(0, !cyw43_arch_gpio_get(0));
+            cyw43_arch_gpio_put(0, false); //led off
+        }
+        else{
+            cyw43_arch_gpio_put(0, true); //led on
         }
     }
 }

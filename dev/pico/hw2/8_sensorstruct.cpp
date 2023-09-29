@@ -8,7 +8,7 @@ struct raft_sensors{
     bool button_state;
 };
 
-raft_sensors myraft;
+struct raft_sensors myraft;
 
 void change_led(struct raft_sensors* r){
     if(!(r->button_state)){ //if button not pressed

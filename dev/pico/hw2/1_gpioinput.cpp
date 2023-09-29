@@ -23,7 +23,7 @@ int main()
             cout << "gpio off\n";
         }
         else{
-            cout << "floating\n"; //just incase
+            cout << "floating\n"; //just in case
         }
     }
 }
