@@ -66,7 +66,7 @@ int main(void){
     sleep_ms(1000);
 
     Motor motors;
-    MotorInit(&motors, RCC_ENA, RCC_ENB, 10000);
+    MotorInit(&motors, RCC_ENA, RCC_ENB, 20000);
     MotorsOn(&motors);    
     
     if(cyw43_arch_init())
@@ -75,11 +75,11 @@ int main(void){
     }
     cyw43_arch_gpio_put(0, true);
 
-    con.kp = 1;
+    con.kp = 2;
     con.ki = 0.02;
     con.kd = 0.0000;
     con.ts = 0.05; // 10ms
-    con.sigma = 0.1;
+    con.sigma = 0.01;
     con.lowerLimit = -100;
     con.upperLimit = 100;
     con.antiWindupEnabled = true;
@@ -88,9 +88,7 @@ int main(void){
     controller.setDeadbands(-10, 10);
     Differentiator diff(con.sigma, con.ts);
     avg_t mov_avg;
-    adc_select_input(1);
-    for(int i=0; i<MOV_AVG_SIZE; i++){mov_avg.avg[i]=adc_read();}
-    
+
     //Timing interface
     timing_t time_check;
     time_check.dt = static_cast<uint32_t>(con.ts*1e6);
@@ -111,7 +109,10 @@ int main(void){
     int error=0;
 
     hysteresis_t h_state;
-
+    
+    adc_select_input(1);
+    for(int i=0; i<MOV_AVG_SIZE; i++){mov_avg.avg[i]=adc_read();}
+    
     while(true) {
         uint32_t cur = time_us_32();
         time_check.cur = cur;
