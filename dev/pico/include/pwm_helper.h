@@ -200,3 +200,54 @@ void MotorPower(Motor *m, int lp, int rp)
     pwm_set_duty(m->left.gpio, abs(lp));
     pwm_set_duty(m->right.gpio, abs(rp));
 }
+
+void DRV8874Init(Motor *m, uint en, uint ph, uint freq)
+{    
+    MotorInitGPIO(en);
+    // MotorInitGPIO(ph);
+    gpio_set_function(en, GPIO_FUNC_PWM);
+    // gpio_set_function(ph, GPIO_FUNC_PWM);
+    m->left.slice = pwm_gpio_to_slice_num(en);
+    // m->right.slice = pwm_gpio_to_slice_num(ph);
+    m->left.chan = pwm_gpio_to_channel(en);
+    // m->right.chan = pwm_gpio_to_channel(ph);
+    m->left.gpio = en;
+    // m->right.gpio = ph;
+    m->left.resolution = pwm_set_freq_duty(m->left.slice, m->left.chan, freq, 0);
+    // m->right.resolution = pwm_set_freq_duty(m->right.slice, m->right.chan, freq, 0);
+
+    MotorInitGPIO(ph);
+    m->in1 = ph;
+}
+
+void DRV8874Power(Motor *m, int lp)
+{
+    //--Handle Directionality--//
+    if(lp < 0)
+    {
+        gpio_put(m->in1, 0);
+    }
+    else 
+    { 
+        gpio_put(m->in1, 1);
+    }
+
+    pwm_set_duty(m->left.gpio, abs(lp));
+}
+
+//Turn all motors on
+void DRV8874On(Motor *m)
+{
+    pwm_set_enabled(m->left.slice, true);
+    m->left.on = true;
+}
+
+//Shut all motors off
+void DRV8874Off(Motor *m)
+{
+
+    pwm_set_enabled(m->left.slice, false);
+    m->left.on = false;
+
+    gpio_put(m->in1, false);
+}
