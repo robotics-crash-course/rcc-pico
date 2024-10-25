@@ -53,6 +53,7 @@ public:
 	bool errorDotEnabled   = false;
 	bool antiWindupEnabled = false;
 
+	PID_control();
 	PID_control(float kp, float ki, float kd, float lowerLimit, float upperLimit, float sigma, float ts);
 	PID_control(float kp, float ki, float kd, float lowerLimit, float upperLimit, float sigma, float ts, bool errorDotEnabled, bool antiWindupEnabled);
 	PID_control(const PID_control_config_t &config);
