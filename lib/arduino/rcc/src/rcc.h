@@ -20,14 +20,12 @@
 #include "util/differentiator.h"
 #include "util/pid-control.h"
 
-extern VL53L0X sensor;
-
-void initLidar()
+void initLidar(VL53L0X* sensor)
 {
   Wire.begin();
 
-  sensor.setTimeout(200);
-  if (!sensor.init())
+  sensor->setTimeout(200);
+  if (!sensor->init())
   {
     Serial.println("Failed to detect and initialize sensor!");
     while (1) {}
@@ -37,14 +35,14 @@ void initLidar()
   // fast as possible).  To use continuous timed mode
   // instead, provide a desired inter-measurement period in
   // ms (e.g. sensor.startContinuous(100)).
-  sensor.startContinuous(0);
+  sensor->startContinuous(0);
 
 }
 
-uint16_t getFastReading()
+uint16_t getFastReading(VL53L0X* sensor)
 {
 
-  uint16_t range = sensor.readReg16Bit(sensor.RESULT_RANGE_STATUS + 10);
+  uint16_t range = sensor->readReg16Bit(sensor->RESULT_RANGE_STATUS + 10);
   //  sensor.writeReg(sensor.SYSTEM_INTERRUPT_CLEAR, 0x01);
   return range;
 }
