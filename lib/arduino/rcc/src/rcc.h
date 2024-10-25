@@ -47,6 +47,10 @@ uint16_t getFastReading(VL53L0X* sensor)
   return range;
 }
 
+/* Toggle the SCL pin on the i2c bus to "refresh" the state of all i2c devices on the bus. 
+    This is essentially purging whatever data any i2c device is waiting to send, hopefully
+    preventing any hanging on the bus
+*/
 void i2c_bus_recovery()
 {
         for(int i=0; i<16; i++){
