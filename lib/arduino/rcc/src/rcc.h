@@ -27,7 +27,7 @@ void initLidar(VL53L0X* sensor)
   sensor->setTimeout(200);
   if (!sensor->init())
   {
-    Serial.println("Failed to detect and initialize sensor!");
+    Serial.println("Failed to detect and initialize sensor! Hanging Indefinitely!");
     while (1) {}
   }
 
