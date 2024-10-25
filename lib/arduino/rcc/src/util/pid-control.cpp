@@ -14,6 +14,17 @@
 
 #include <Arduino.h>
 
+PID_control::PID_control()
+{
+	this->kp         = 0;
+	this->ki         = 0;
+	this->kd         = 0;
+	this->lowerLimit = -100;
+	this->upperLimit = 100;
+	this->sigma      = 0.1;
+	this->ts         = 0.01;
+	this->beta       = ((2.0 * sigma) - ts) / ((2.0 * sigma) + ts);
+}
 
 float PID_control::deadband_compensation(float unsat)
 {

@@ -11,12 +11,12 @@
 #define CU_SUMMER_STEM_ROBOTICS_CRASH_COURSE_ACTUATOR_MOTOR_H
 
 
-#define RCC_MOTOR_IN1 40
-#define RCC_MOTOR_IN2 42
-#define RCC_MOTOR_ENA 44
-#define RCC_MOTOR_ENB 46
-#define RCC_MOTOR_IN3 48
-#define RCC_MOTOR_IN4 50
+#define RCC_MOTOR_IN1 5
+#define RCC_MOTOR_IN2 6
+#define RCC_MOTOR_IN3 7
+#define RCC_MOTOR_IN4 8
+#define RCC_MOTOR_ENA 10
+#define RCC_MOTOR_ENB 11
 
 #define pwr2pwm(PWR) map(constrain(PWR, 0, 100), 0, 100, 0, 255)
 
