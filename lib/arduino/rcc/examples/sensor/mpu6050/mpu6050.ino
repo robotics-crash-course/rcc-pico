@@ -56,18 +56,17 @@ void loop()
   float ang_vel_z = imu.getAngVelZ();
   //float ang_vel_z = imu.getAngVel('z');
 
-  Serial.print("accel (x, y): (");
+  Serial.print("ax, ay: ");
   Serial.print(accel_x);
   Serial.print(", ");
   Serial.print(accel_y);
-  Serial.println(")");
-  Serial.print("ang vel (x, y, z): (");
+  Serial.print(" wx, wy, wz: ");
   Serial.print(ang_vel_x);
   Serial.print(", ");
   Serial.print(ang_vel_y);
   Serial.print(", ");
   Serial.print(ang_vel_z);
-  Serial.println(")");
+  Serial.println();
 
   delay(250);
 }
