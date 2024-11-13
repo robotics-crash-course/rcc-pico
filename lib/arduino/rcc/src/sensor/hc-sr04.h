@@ -15,7 +15,7 @@
 
 
 #define RCC_ECHO_PIN 4
-#define RCC_TRIG_PIN 10
+#define RCC_TRIG_PIN A3
 
 #define RCC_HC_SR04_TIMEOUT_US 5000
 
