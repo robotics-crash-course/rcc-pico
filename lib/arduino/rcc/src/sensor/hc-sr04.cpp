@@ -3,13 +3,14 @@
  * hc-sr04.cpp -- HC-SR04 interface
  *
  * Copyright (C) 2020-2022  Michael Giglia <michael.a.giglia@gmail.com>
- * Copyright (C) 2020  Andrew Lorber <andrewlorber@aol.com>
- * Copyright (C) 2022  Jacob Koziej <jacobkoziej@gmail.com>
+ * Copyright (C) 2020       Andrew Lorber <andrewlorber@aol.com>
+ * Copyright (C) 2022-2024  Jacob Koziej <jacobkoziej@gmail.com>
  */
 
 #include "hc-sr04.h"
 
 #include <Arduino.h>
+#include <limits.h>
 
 #include <PinChangeInterrupt.h>
 
@@ -55,11 +56,18 @@ unsigned long HC_SR04::pulse(unsigned long timeout_us = RCC_HC_SR04_TIMEOUT_US)
 	delayMicroseconds(PULSE_LEN_US);
 	digitalWrite(RCC_TRIG_PIN, LOW);
 
+	unsigned long pulse_us;
+
 #ifdef __AVR_ATmega328P__
-	return pulse(RCC_ECHO_PIN, HIGH, timeout_us);
+	pulse_us = pulse(RCC_ECHO_PIN, HIGH, timeout_us);
 #else
-	return pulseInLong(RCC_ECHO_PIN, HIGH, timeout_us);
+	pulse_us = pulseInLong(RCC_ECHO_PIN, HIGH, timeout_us);
 #endif /* __AVR_ATmega328P__ */
+
+	// return ULONG_MAX for an intuitive error
+	if (!pulse_us) return ULONG_MAX;
+
+	return pulse_us;
 }
 
 static void HC_SR04_async::pulse_isr(void)
@@ -119,7 +127,12 @@ void HC_SR04_async::begin(uint8_t echo_pin, uint8_t trig_pin)
 
 unsigned long HC_SR04_async::getDuration(void)
 {
-	return (pulse_done && (pulse_us < pulse_timeout_us)) ? pulse_us : 0;
+	if (!pulse_done) return ULONG_MAX;
+
+	// return ULONG_MAX for an intuitive error
+	if (!pulse_us) return ULONG_MAX;
+
+	return (pulse_us < pulse_timeout_us) ? pulse_us : ULONG_MAX;
 }
 
 bool HC_SR04_async::isDone(void)
