@@ -1,5 +1,10 @@
 # RCC Arduino Pin Definitions
 
+# Servo
+Vcc    - 5V     //Red
+GND    - GND    //Black or Brown
+Signal - D9     //White or Orange
+
 ## I2C - MPU6050, VL53L0X
 SDA - A4
 SCL - A5
