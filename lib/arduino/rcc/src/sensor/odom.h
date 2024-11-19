@@ -14,7 +14,7 @@
 #define RCC_LEFT_ENCODER_PIN_INT  2
 #define RCC_LEFT_ENCODER_PIN_DIR  12
 #define RCC_RIGHT_ENCODER_PIN_INT 3
-#define RCC_RIGHT_ENCODER_PIN_DIR 13
+#define RCC_RIGHT_ENCODER_PIN_DIR 4
 
 
 template<int int_pin>

@@ -29,11 +29,11 @@ ENCB - D12      //Green
 Vcc  - 5V       //Red
 GND  - GND      //Black
 ENCA - D3       //Blue
-ENCB - D13      //Green
+ENCB - D4      //Green
 
 ## HC-SR04
 TRIG - A3
-ECHO - D4
+ECHO - D13
 
 ## IR-Reflective sensor (for example)
 Vcc - 5V
